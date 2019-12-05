@@ -1,6 +1,6 @@
 # AIR1919i
 
-## Deno Mobile App made with Flutter and Laravel
+## Deno Mobile Application built with Flutter and Laravel
 
 ### Laravel 
 https://laravel.com/
