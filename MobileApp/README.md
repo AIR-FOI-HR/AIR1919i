@@ -1,10 +1,10 @@
-# mobile_app
+## Deno Mobile Application
 
-Deno Application.
+Deno Mobile Application is a project used for the "Deno Restaurant".
 
-## Getting Started
+## Flutter
 
-This project is a starting point for a Flutter application.
+Deno Mobile Application is built in Flutter.
 
 A few resources to get you started if this is your first Flutter project:
 
