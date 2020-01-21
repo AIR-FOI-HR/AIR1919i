@@ -32,6 +32,6 @@ class Meal extends Model
      */
     public function ratings()
     {
-        return $this->belongsToMany(Rating::class, 'ratings');
+        return $this->belongsToMany(Rating::class);
     }
 }
