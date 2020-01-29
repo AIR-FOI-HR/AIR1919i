@@ -36,13 +36,16 @@ class HomePage extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 5.0),
-                            child:Expanded(
-                              child: new Container(
-                                  child: Divider(
-                                    color: Colors.white,
-                                    height: 36,
-                                  )),
-                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: new Container(
+                                    child: Divider(
+                                      color: Colors.white,
+                                      height: 36,
+                                    )),
+                              )],
+                            )
                           ),
                         ],
                       )),
