@@ -1,71 +1,56 @@
 import 'package:flutter/material.dart';
-
-import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:user_repository/user_repository.dart';
-
-import 'package:mobile_app/authentication/authentication.dart';
-import 'package:mobile_app/splash/splash.dart';
-import 'package:mobile_app/login/login.dart';
-import 'package:mobile_app/home/home.dart';
-import 'package:mobile_app/common/common.dart';
-
-class SimpleBlocDelegate extends BlocDelegate {
-  @override
-  void onEvent(Bloc bloc, Object event) {
-    super.onEvent(bloc, event);
-    print(event);
-  }
-
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-    print(transition);
-  }
-
-  @override
-  void onError(Bloc bloc, Object error, StackTrace stacktrace) {
-    super.onError(bloc, error, stacktrace);
-    print(error);
-  }
-}
+import 'package:mobile_app/views/my_profile.dart';
+import 'package:provider/provider.dart';
+import 'package:mobile_app/providers/auth.dart';
+import 'package:mobile_app/providers/meal.dart';
+import 'package:mobile_app/views/loading.dart';
+import 'package:mobile_app/views/login.dart';
+import 'package:mobile_app/views/register.dart';
+import 'package:mobile_app/views/password_reset.dart';
+import 'package:mobile_app/views/weekly_menu.dart';
+import 'package:mobile_app/views/meals.dart';
 
 void main() {
-  BlocSupervisor.delegate = SimpleBlocDelegate();
-  final userRepository = UserRepository();
   runApp(
-    BlocProvider<AuthenticationBloc>(
-      create: (context) {
-        return AuthenticationBloc(userRepository: userRepository)
-          ..add(AppStarted());
-      },
-      child: App(userRepository: userRepository),
+    ChangeNotifierProvider(
+      create: (context) => AuthProvider(),
+      child: MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Router(),
+          '/login': (context) => LogIn(),
+          '/register': (context) => Register(),
+          '/password-reset': (context) => PasswordReset(),
+          '/weekly-menu': (context) => WeeklyMenu(),
+          '/my-profile': (context) => MyProfile(),
+        },
+      ),
     ),
   );
 }
 
-class App extends StatelessWidget {
-  final UserRepository userRepository;
-
-  App({Key key, @required this.userRepository}) : super(key: key);
-
+class Router extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) {
-          if (state is AuthenticationAuthenticated) {
-            return HomePage();
-          }
-          if (state is AuthenticationUnauthenticated) {
-            return LoginPage(userRepository: userRepository);
-          }
-          if (state is AuthenticationLoading) {
-            return LoadingIndicator();
-          }
-          return SplashPage();
-        },
-      ),
+
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    return Consumer<AuthProvider>(
+      builder: (context, user, child) {
+        switch (user.status) {
+          case Status.Uninitialized:
+            return Loading();
+          case Status.Unauthenticated:
+            return LogIn();
+          case Status.Authenticated:
+            return ChangeNotifierProvider(
+              create: (context) => MealProvider(authProvider),
+              child: Meals(),
+            );
+          default:
+            return LogIn();
+        }
+      },
     );
   }
 }
