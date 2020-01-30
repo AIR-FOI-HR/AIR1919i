@@ -9,6 +9,9 @@ import 'package:mobile_app/utils/slide_route.dart';
 class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+//    print(ModalRoute.of(context).settings.name); TODO => Highlight current route in navigation drawer
+
     return  Drawer(
         child: Container(color: Colors.black87,
           child: ListView(

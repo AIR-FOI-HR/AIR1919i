@@ -23,6 +23,6 @@ class SlideRoute extends PageRouteBuilder {
             end: Offset.zero,
           ).animate(animation),
           child: child,
-        ),
+    ),
   );
 }

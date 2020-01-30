@@ -8,7 +8,7 @@ import 'package:mobile_app/views/login.dart';
 import 'package:mobile_app/views/register.dart';
 import 'package:mobile_app/views/password_reset.dart';
 import 'package:mobile_app/views/weekly_menu.dart';
-import 'package:mobile_app/views/meals.dart';
+import 'package:mobile_app/views/daily_menu.dart';
 
 void main() {
   runApp(
@@ -45,7 +45,7 @@ class Router extends StatelessWidget {
           case Status.Authenticated:
             return ChangeNotifierProvider(
               create: (context) => MealProvider(authProvider),
-              child: Meals(),
+              child: DailyMenu(),
             );
           default:
             return LogIn();

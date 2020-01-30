@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
 
-Widget mealList(BuildContext context, List<Meal> meals, loadMore) {
-
-  ScrollController _scrollController = ScrollController();
-
-  _scrollController.addListener(() {
-    if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
-      loadMore();
-    }
-  });
+Widget mealList(BuildContext context, List<Meal> meals) {
 
   return ListView.separated(
-    controller: _scrollController,
     itemCount: meals.length,
     itemBuilder: (BuildContext context, int index) {
       final meal = meals[index];
