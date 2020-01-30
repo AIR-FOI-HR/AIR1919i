@@ -8,8 +8,11 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="mobile_app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Bistro Deno"
+        android:icon="@mipmap/launcher_icon"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:replace="android:icon"
+        >
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -31,3 +34,4 @@
         </activity>
     </application>
 </manifest>
+
