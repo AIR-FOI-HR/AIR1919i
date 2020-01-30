@@ -16,6 +16,7 @@ Route::group([
     'prefix' => 'v1'
 ], function () {
     Route::apiResource('meals', 'Api\MealApiController');
+    Route::get('scan-qr-code', 'Api\QRCodeController@index');
 });
 
 // Not Found
