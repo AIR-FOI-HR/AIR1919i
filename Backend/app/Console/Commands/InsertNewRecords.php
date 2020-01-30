@@ -39,10 +39,10 @@ class InsertNewRecords extends Command
      */
     public function handle()
     {
-        Meal::create(['name' => 'Pizza']);
+        Meal::create(['name' => 'Pizza', 'price' => 40.0, 'description' => 'Much tasty.']);
 
-        User::find(1)->favoriteMeals()->save(Meal::first());
+//        User::find(1)->favoriteMeals()->save(Meal::first());
 
-        User::find(1)->ratings()->save(Meal::first(), ['stars' => 5, 'comment' => 'Very good food indeed.']);
+//        User::find(1)->ratings()->save(Meal::first(), ['stars' => 5, 'comment' => 'Very good food indeed.']);
     }
 }
