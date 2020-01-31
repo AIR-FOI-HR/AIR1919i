@@ -84,7 +84,7 @@
                     Deno Backend
                 </div>
                 <p>Testing QR Code.</p>
-                <img height="200px" src="{{ \App\QRCode::first()->code }}" alt="">
+                <img height="200px" src="{{ \App\QrCode::first()->img }}" alt="Testing QRCode">
             </div>
         </div>
     </body>
