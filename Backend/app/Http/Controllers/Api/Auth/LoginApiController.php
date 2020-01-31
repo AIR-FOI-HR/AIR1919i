@@ -26,7 +26,7 @@ class LoginApiController extends APIController
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => [
-                'id' => $user->hashid,
+                'id' => $user->id,
                 'name' => $user->name
             ]
         ], 200);
