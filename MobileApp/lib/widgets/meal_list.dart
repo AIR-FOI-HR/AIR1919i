@@ -12,14 +12,33 @@ Widget mealList(BuildContext context, List<Meal> meals) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
         child: new Card(
-          elevation: 10,
+          elevation: 8,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Container(
-                width: 50,
-                height: 25,
-                color: Colors.red,
+                  width: 60,
+                  height: 25,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(7.0),
+                    bottomLeft: Radius.circular(7.0)
+                  ),
+                  color: Colors.red,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(6, 2, 2, 2),
+                  child: Row(
+                    children: <Widget>[
+                      Text("120 ", style: TextStyle(color: Colors.white)),
+                      Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                        size: 15.0,
+                      ),
+                    ],
+                  ),
+                ),
               ),
               Row(
                 children: <Widget>[
@@ -44,7 +63,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                               Icon(Icons.star, color: Colors.yellow[500],size: 16.0),
                               Icon(Icons.star, color: Colors.yellow[500],size: 16.0),
                               Icon(Icons.star, color: Colors.yellow[500],size: 16.0),
-                              Icon(Icons.star, color: Colors.grey,size: 16.0),
+                              Icon(Icons.star, color: Colors.yellow[500],size: 16.0),
                               Icon(Icons.star, color: Colors.grey,size: 16.0),
                             ],
                           ),
@@ -78,42 +97,6 @@ Widget mealList(BuildContext context, List<Meal> meals) {
               )
             ],
           )
-          /*child: new Column(
-            children: <Widget>[
-               ListTile(
-                leading: Image.asset("assets/images/hamburger.jpg"),
-                title: Text(meal.name,
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),),
-                subtitle: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(meal.description, style: new TextStyle(fontSize: 13.0, fontWeight: FontWeight.normal)),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: new Row(
-                  //mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
-                    Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
-                    Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
-                    Icon(Icons.star, color: Colors.grey,size: 15.0),
-                    Icon(Icons.star, color: Colors.grey,size: 15.0),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(48.0, 10.0, 0.0, 0.0),
-                      child: new Text("Cijena",
-                          style: new TextStyle(
-                              fontSize: 13.0, fontWeight: FontWeight.bold, color: Colors.black)),
-                    ),
-                  ],
-                ),
-              ),
-            ]
-          )*/
         ),
       );
     },
