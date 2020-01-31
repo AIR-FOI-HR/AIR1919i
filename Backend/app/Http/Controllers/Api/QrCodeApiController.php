@@ -6,7 +6,7 @@ use App\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class QrCodeController extends ApiController
+class QrCodeApiController extends ApiController
 {
     /**
      * Display a listing of the resource.
