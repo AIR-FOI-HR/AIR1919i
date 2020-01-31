@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 
 abstract class ApiController extends Controller
 {
-
     /**
      * Returns a generic success (200) JSON response.
      *
@@ -47,20 +46,6 @@ abstract class ApiController extends Controller
             'status' => 201,
             'message' => $message,
         ], 201);
-    }
-
-    /**
-     * Returns a resource deleted (204) JSON response.
-     *
-     * @param  string $message
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function responseResourceDeleted($message = 'Resource deleted.')
-    {
-        return response()->json([
-            'status' => 204,
-            'message' => $message,
-        ], 204);
     }
 
     /**
