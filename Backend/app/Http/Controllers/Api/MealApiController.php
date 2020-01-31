@@ -23,34 +23,6 @@ class MealApiController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        $validator = Validator::make($request->all(), ['value' => 'required']);
-
-        if ($validator->fails()) return $this->responseUnprocessable([$validator->errors()]);
-
-        try {
-            $meal = Meal::create([
-                'user_id' => $user->id,
-                'value' => request('value'),
-            ]);
-            return response()->json([
-                'status' => 201,
-                'message' => 'Resource created.',
-                'id' => $meal->id
-            ], 201);
-        } catch (\Exception $e) {
-            return $this->responseServerError('Error creating resource.');
-        }
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param Request $request
@@ -93,27 +65,6 @@ class MealApiController extends ApiController
             }
         } catch (\Exception $e) {
             return $this->responseServerError('Error updating resource.');
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(Request $request, $id)
-    {
-        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        $meal = Meal::where('id', $id)->firstOrFail();
-
-        if ($meal->user_id !== $user->id) return $this->responseUnauthorized();
-        try {
-            $meal->delete();
-            return $this->responseResourceDeleted();
-        } catch (\Exception $e) {
-            return $this->responseServerError('Error deleting resource.');
         }
     }
 }
