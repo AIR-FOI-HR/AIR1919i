@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\MealCollection;
@@ -18,6 +19,7 @@ class MealApiController extends ApiController
      */
     public function index(Request $request)
     {
+        // TODO => Check if param weekly or daily sent, if yes return different result
         if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
         return new MealCollection(Meal::paginate());
     }
@@ -32,7 +34,8 @@ class MealApiController extends ApiController
     public function show(Request $request, $id)
     {
         if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        $meal = Meal::where('id', $id)->firstOrFail();
+        // TODO => Find other reviews
+        $meal = Meal::findOrFail($id);
         return new MealResource($meal);
     }
 
@@ -46,23 +49,27 @@ class MealApiController extends ApiController
     public function update(Request $request, $id)
     {
         if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        $validator = Validator::make($request->all(), [
-            'value' => 'string',
-            'status' => 'in:closed,open',
-        ]);
-
-        if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
-
         try {
-            $meal = Meal::where('id', $id)->firstOrFail();
-            if ($meal->user_id === $user->id) {
-                if (request('value')) $meal->value = request('value');
-                if (request('status')) $meal->status = request('status');
-                $meal->save();
+            $meal = Meal::findOrFail($id)->firstOrFail();
+            if ($request->add_to_favorites) $user->favoriteMeals()->toggle($meal->id);
+            else if ($request->review) {
+
+                $validator = Validator::make($request->all(), [
+                    'stars' => 'required|integer|between:1,5',
+                    'comment' => 'required|string',
+                ]);
+
+                if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
+
+                Rating::create([
+                    'meal_id' => $meal->id,
+                    'user_id' => $user->id,
+                    'stars' => $request->stars,
+                    'comment' => $request->comment,
+                ]);
+
                 return $this->responseResourceUpdated();
-            } else {
-                return $this->responseUnauthorized();
-            }
+            } else return $this->responseUnauthorized();
         } catch (\Exception $e) {
             return $this->responseServerError('Error updating resource.');
         }
