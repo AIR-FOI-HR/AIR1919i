@@ -59,13 +59,13 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * User HAS MANY QRCodes
+     * User HAS MANY QrCodes
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function QRCodes()
+    public function QrCodes()
     {
-        return $this->belongsToMany(QRCode::class, 'qr_code_user');
+        return $this->belongsToMany(QrCode::class, 'qr_code_user');
     }
 
     /**
