@@ -97,19 +97,19 @@ class InsertNewRecords extends Command
 
         // Populate user_favorite_meals table
 
-//        User::find(1)->favoriteMeals()->save(Meal::first());
+//        User::find(1)->favoriteMeals()->save(Meal::find(20));
 
         // Populate qr_code_user table
 
         // Monday
 //        $weekly_menu = new WeeklyMenu();
-//        $weekly_menu->day = 1;
-//        $weekly_menu->meal_id = 44;
+//        $weekly_menu->day = 5;
+//        $weekly_menu->meal_id = 20;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 1;
-//        $weekly_menu->meal_id = 45;
+//        $weekly_menu->meal_id = 19;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
