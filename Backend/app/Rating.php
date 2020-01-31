@@ -16,22 +16,22 @@ class Rating extends Model
     ];
 
     /**
-     * Rating HAS ONE User
+     * Rating BELONGS TO User
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function users()
+    public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * Rating HAS ONE Meal
+     * Rating BELONGS TO Meal
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function meal()
     {
-        return $this->hasOne(Meal::class);
+        return $this->belongsTo(Meal::class);
     }
 }
