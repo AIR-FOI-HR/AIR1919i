@@ -34,4 +34,14 @@ class Meal extends Model
     {
         return $this->hasMany(Rating::class);
     }
+
+    /**
+     * Meal HAS MANY weekly menus
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function weeklyMenu()
+    {
+        return $this->hasMany(WeeklyMenu::class);
+    }
 }
