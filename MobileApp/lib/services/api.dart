@@ -20,7 +20,7 @@ class ApiService {
     this.token = authProvider.token;
   }
 
-  final String api = 'http://192.168.0.34:8000/api/v1/meals';
+  final String api = 'http://192.168.0.34:8000/api';
 
   /*
   * Validates the response code from an API call.
@@ -33,10 +33,9 @@ class ApiService {
   }
 
   // Returns a list of meals.
-  Future<MealResponse> getMeals({ String url = '' }) async {
-    // Defaults to the first page if no url is set.
-    if (url == '') url = "$api";
+  Future<MealResponse> getMeals() async {
 
+    final url = "$api/meals";
     final response = await http.get(
       url,
       headers: {
