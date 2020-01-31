@@ -16,7 +16,7 @@ class AuthProvider with ChangeNotifier {
   String get token => _token;
   NotificationText get notification => _notification;
 
-  final String api = 'http://192.168.0.34:8000/api/v1/auth';
+  final String api = 'http://192.168.0.34:8000/api/auth';
 
   initAuthProvider() async {
     String token = await getToken();
