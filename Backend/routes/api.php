@@ -13,6 +13,7 @@ Route::group([
 
 Route::apiResource('meals', 'Api\MealApiController');
 Route::get('scan-qr-code', 'Api\QrCodeController@index');
+Route::get('my-profile', 'Api\MyProfileController@index');
 
 // Not Found
 Route::fallback(function(){
