@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
+
+use App\Http\Controllers\Api\ApiController;
 
 class LogoutApiController extends APIController
 {
-
     /**
      * Log the user out (Invalidate the token).
      *

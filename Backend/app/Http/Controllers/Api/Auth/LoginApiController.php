@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
+
+use App\Http\Controllers\Api\ApiController;
 
 class LoginApiController extends APIController
 {
-
     /**
      * Get a JWT via given credentials.
      *
@@ -16,7 +17,6 @@ class LoginApiController extends APIController
 
         if (!$token = auth()->attempt($credentials)) return $this->responseUnauthorized();
 
-        // Get the user data.
         $user = auth()->user();
 
         return response()->json([
@@ -25,10 +25,10 @@ class LoginApiController extends APIController
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => array(
+            'user' => [
                 'id' => $user->hashid,
                 'name' => $user->name
-            )
+            ]
         ], 200);
     }
 }

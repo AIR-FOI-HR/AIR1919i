@@ -4,16 +4,16 @@
 Route::group([
     'prefix' => 'auth',
 ], function () {
-    Route::post('login', 'Api\LoginApiController@login');
-    Route::post('logout', 'Api\LogoutApiController@logout');
-    Route::post('register', 'Api\RegisterApiController@register');
-    Route::post('forgot-password', 'Api\ForgotPasswordApiController@email');
-    Route::post('password-reset', 'Api\ResetPasswordApiController@reset');
+    Route::post('login', 'Api\Auth\LoginApiController@login');
+    Route::post('logout', 'Api\Auth\LogoutApiController@logout');
+    Route::post('register', 'Api\Auth\RegisterApiController@register');
+    Route::post('forgot-password', 'Api\Auth\ForgotPasswordApiController@email');
+    Route::post('password-reset', 'Api\Auth\ResetPasswordApiController@reset');
 });
 
 Route::apiResource('meals', 'Api\MealApiController');
-Route::get('scan-qr-code', 'Api\QrCodeController@index');
-Route::get('my-profile', 'Api\MyProfileController@index');
+Route::get('scan-qr-code', 'Api\QrCodeApiController@index');
+Route::get('my-profile', 'Api\MyProfileApiController@index');
 
 // Not Found
 Route::fallback(function(){
