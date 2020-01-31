@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link rel="shortcut icon" type="image/png" href="{{ asset('/img/favicon.ico') }}"/>
 
         <!-- Styles -->
         <style>
@@ -83,8 +84,10 @@
                 <div class="title m-b-md">
                     Deno Backend
                 </div>
-                <p>Testing QR Code.</p>
-                <img height="200px" src="{{ \App\QrCode::first()->img }}" alt="Testing QRCode">
+                @if(\App\QrCode::first() && \App\QrCode::first()->img)
+                    <p>Testing QR Code.</p>
+                    <img height="200px" src="{{ \App\QrCode::first()->img }}" alt="Testing QRCode">
+                @endif
             </div>
         </div>
     </body>
