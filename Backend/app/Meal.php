@@ -28,10 +28,10 @@ class Meal extends Model
     /**
      * Meal HAS MANY ratings
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function ratings()
     {
-        return $this->belongsToMany(Rating::class);
+        return $this->hasMany(Rating::class);
     }
 }
