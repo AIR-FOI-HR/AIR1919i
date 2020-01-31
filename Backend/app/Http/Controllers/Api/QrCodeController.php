@@ -36,6 +36,11 @@ class QrCodeController extends ApiController
         // Populate pivot table
         $user->QrCodes()->attach($qr_code->id);
 
+        // Check Users's current number of signatures and increment it
+        if ($user->signatures_count == 10) $user->signatures_count = 0;
+        $user->signatures_count++;
+        $user->save();
+
         return response()->json(['message' => 'Successfully scanned the QRCode.'], 200);
     }
 }
