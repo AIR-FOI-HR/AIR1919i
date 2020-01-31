@@ -34,7 +34,6 @@ class MealApiController extends ApiController
     public function show(Request $request, $id)
     {
         if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        // TODO => Find other reviews
         $meal = Meal::findOrFail($id);
         return new MealResource($meal);
     }
