@@ -49,8 +49,16 @@ class MealApiController extends ApiController
     {
         if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
         try {
-            $meal = Meal::findOrFail($id)->firstOrFail();
-            if ($request->add_to_favorites) $user->favoriteMeals()->toggle($meal->id);
+            $meal = Meal::findOrFail($id);
+
+            $validator = Validator::make($request->all(), [
+                'toggle_favorite' => 'integer|in:0,1',
+                'review' => 'integer|:in:0,1',
+            ]);
+
+            if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
+
+            if ($request->toggle_favorite) $user->favoriteMeals()->toggle($meal->id);
             else if ($request->review) {
 
                 $validator = Validator::make($request->all(), [
