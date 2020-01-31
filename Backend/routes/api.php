@@ -11,8 +11,8 @@ Route::group([
     Route::post('password-reset', 'Api\Auth\ResetPasswordApiController@reset');
 });
 
-Route::apiResource('meals', 'Api\MealApiController');
-Route::get('scan-qr-code', 'Api\QrCodeApiController@index');
+Route::apiResource('meals', 'Api\MealApiController')->only(['index', 'show', 'update']);;
+Route::post('scan-qr-code', 'Api\QrCodeApiController@index');
 Route::get('my-profile', 'Api\MyProfileApiController@index');
 
 // Not Found
