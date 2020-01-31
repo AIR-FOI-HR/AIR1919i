@@ -2,7 +2,7 @@
 
 // Auth Endpoints
 Route::group([
-    'prefix' => 'v1/auth',
+    'prefix' => 'auth',
 ], function () {
     Route::post('login', 'Api\LoginApiController@login');
     Route::post('logout', 'Api\LogoutApiController@logout');
@@ -11,13 +11,8 @@ Route::group([
     Route::post('password-reset', 'Api\ResetPasswordApiController@reset');
 });
 
-// Resource Endpoints
-Route::group([
-    'prefix' => 'v1'
-], function () {
-    Route::apiResource('meals', 'Api\MealApiController');
-    Route::get('scan-qr-code', 'Api\QRCodeController@index');
-});
+Route::apiResource('meals', 'Api\MealApiController');
+Route::get('scan-qr-code', 'Api\QrCodeController@index');
 
 // Not Found
 Route::fallback(function(){
