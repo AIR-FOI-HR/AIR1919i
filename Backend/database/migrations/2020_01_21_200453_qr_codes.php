@@ -16,7 +16,8 @@ class QrCodes extends Migration
         Schema::create('qr_codes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code');
-            $table->tinyInteger('times_scanned')->default(0);
+            $table->text('img');
+            $table->tinyInteger('max_scan_times');
             $table->timestamps();
         });
     }
