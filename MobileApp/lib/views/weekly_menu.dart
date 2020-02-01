@@ -10,40 +10,26 @@ class WeeklyMenu extends StatefulWidget {
 }
 
 class WeeklyMenuState extends State<WeeklyMenu>{
-  int _selectedIndexForTabBar = 0;
+
+  int _selectedIndexForTabBar = 1;
 
   void _onItemTappedForTabBar(int index) {
     setState(() {
-      _selectedIndexForTabBar  = index + 1;
-      _selectedIndexForTabBar > 6 ? _selectedIndexForTabBar = 0 : _selectedIndexForTabBar = index + 1;
+      _selectedIndexForTabBar++;
+      _selectedIndexForTabBar =  _selectedIndexForTabBar  > 6 ?  0 : index + 1;
     });
-  }
-
-  String getDay(int index) {
-    switch(index) {
-      case 0: {  return "Sunday"; }
-      break;
-      case 1: {  return "Monday"; }
-      break;
-      case 2: {  return "Tuesday"; }
-      break;
-      case 3: {  return "Wednesday"; }
-      break;
-      case 4: {  return "Thursday"; }
-      break;
-      case 5: {  return "Friday"; }
-      break;
-      case 6: {  return "Saturday"; }
-      break;
-      default: { return "Monday"; }
-      break;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
 
-    final tabBar = new TabBar(labelColor: Colors.white,labelStyle: TextStyle(fontSize: 16),
+    // Get current day and date
+    DateTime now = new DateTime.now();
+    String formattedDate = DateFormat('MM.dd.yyyy').format(now);
+
+    final tabBar = new TabBar(
+      labelColor: Colors.white,
+      labelStyle: TextStyle(fontSize: 16),
       isScrollable: true,
       onTap: _onItemTappedForTabBar,
       unselectedLabelColor: Colors.grey,
@@ -95,11 +81,8 @@ class WeeklyMenuState extends State<WeeklyMenu>{
     meals[1] = meal_2;
     meals[2] = meal_3;
 
-    // Get current day and date
-    DateTime now = new DateTime.now();
-    String formattedDate = DateFormat('MM.dd.yyyy').format(now);
-
     return new DefaultTabController(
+        initialIndex: now.weekday - 1,
         length: 7,
         child: new Scaffold(
             appBar: new AppBar(
@@ -120,7 +103,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(32, 25, 10, 0),
-                    child: Text(getDay(_selectedIndexForTabBar), style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold)),
+                    child: Text( _selectedIndexForTabBar == 1 ? "Monday" : _selectedIndexForTabBar == 2 ? "Tuesday" : _selectedIndexForTabBar == 3 ? "Wednesday" : _selectedIndexForTabBar == 4 ? "Thursday" : _selectedIndexForTabBar == 5 ? "Friday" : _selectedIndexForTabBar == 6 ? "Saturday" : "Sunday", style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold)),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(32, 3, 10, 16),
