@@ -119,7 +119,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 16, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(32, 25, 10, 0),
                     child: Text(getDay(_selectedIndexForTabBar), style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold)),
                   ),
                   Padding(

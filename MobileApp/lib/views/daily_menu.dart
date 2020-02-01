@@ -71,7 +71,7 @@ class DailyMenuState extends State<DailyMenu> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(32, 16, 10, 0),
+              padding: const EdgeInsets.fromLTRB(32, 25, 10, 0),
               child: Text("$formattedDay", style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.w900)),
             ),
             Padding(

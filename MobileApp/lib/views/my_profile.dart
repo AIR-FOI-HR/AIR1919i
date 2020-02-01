@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
 import 'package:mobile_app/widgets/navigation_drawer.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyProfile extends StatelessWidget {
 
@@ -32,6 +32,15 @@ class MyProfile extends StatelessWidget {
     meals[1] = meal_2;
     meals[2] = meal_3;
 
+    Future<String> _getUserImage() async{
+      final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+      return sharedPrefs.getString('img');
+    }
+
+    Future<String> _getUserName() async{
+      final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+      return sharedPrefs.getString('name');
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -51,20 +60,33 @@ class MyProfile extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.fromLTRB(10, 25, 10, 10),
               child: Center(
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(80.0),
-                    child: Image.asset("assets/images/butterflywings55.jpg",
-                        width: 100)),
+                    child: FutureBuilder<String>(
+                        future: _getUserImage(),
+                        initialData: 'http://192.168.0.43:8000/img/DefaultUserImage.png',
+                        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                          return snapshot.hasData ?
+                          Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/DefaultUserImage.png', width: 100) :
+                          CircularProgressIndicator();
+                        }
+                    ),
+                ),
               ),
             ),
-            Text(
-              "butterflywings55",
-              style: TextStyle(fontWeight: FontWeight.bold),
+            FutureBuilder<String>(
+                future: _getUserName(),
+                initialData: 'Name',
+                builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  return snapshot.hasData ?
+                  Text(snapshot.data, style: TextStyle(fontWeight: FontWeight.bold)) :
+                  CircularProgressIndicator();
+                }
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 15, 20, 2),
+              padding: const EdgeInsets.fromLTRB(20, 30, 20, 2),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +94,7 @@ class MyProfile extends StatelessWidget {
                   Expanded(
                       flex: 6,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(110, 0, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
                         child: Row(
                           children: <Widget>[
                             Icon(Icons.favorite),
@@ -83,7 +105,7 @@ class MyProfile extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
                         child: Row(
                           children: <Widget>[
                             Icon(Icons.star),
@@ -99,7 +121,7 @@ class MyProfile extends StatelessWidget {
                 Expanded(
                     flex: 7,
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(110, 0, 0, 40),
+                      padding: const EdgeInsets.fromLTRB(90, 0, 0, 40),
                       child: Row(
                         children: <Widget>[
                           Text("Favorite Meals",style: TextStyle(color: Colors.grey, fontSize: 14),)
@@ -109,7 +131,7 @@ class MyProfile extends StatelessWidget {
                 Expanded(
                     flex: 6,
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 40),
+                      padding: const EdgeInsets.fromLTRB(50, 0, 0, 40),
                       child: Row(
                         children: <Widget>[
                           Text("Reviews Left",style: TextStyle(color: Colors.grey, fontSize: 14),)

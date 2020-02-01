@@ -54,7 +54,7 @@ class NavigationDrawer extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 20.0, top: 8.0),
                         child: FutureBuilder<String>(
                             future: _getUserName(),
-                            initialData: 'username',
+                            initialData: 'Name',
                             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                               return snapshot.hasData ?
                               Text(snapshot.data, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w500)) :
