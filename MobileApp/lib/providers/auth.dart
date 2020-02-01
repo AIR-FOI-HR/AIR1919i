@@ -1,8 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 import 'package:mobile_app/widgets/notification_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
@@ -129,6 +129,7 @@ class AuthProvider with ChangeNotifier {
     SharedPreferences storage = await SharedPreferences.getInstance();
     await storage.setString('token', apiResponse['access_token']);
     await storage.setString('name', apiResponse['user']['name']);
+    await storage.setString('img', apiResponse['user']['img']);
   }
 
   Future<String> getToken() async {
