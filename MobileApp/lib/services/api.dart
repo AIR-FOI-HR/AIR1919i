@@ -50,8 +50,6 @@ class ApiService {
 
     List<Meal> meals = mealFromJson(json.encode(data));
 
-    String next = apiResponse['links']['next'];
-
-    return MealResponse(meals, next);
+    return MealResponse(meals);
   }
 }
