@@ -6,6 +6,7 @@ import 'package:mobile_app/providers/meal.dart';
 import 'package:mobile_app/widgets/meal_list.dart';
 import 'package:mobile_app/widgets/navigation_drawer.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:intl/intl.dart';
 
 class DailyMenu extends StatefulWidget {
   @override
@@ -47,6 +48,11 @@ class DailyMenuState extends State<DailyMenu> {
     meals[1] = meal_2;
     meals[2] = meal_3;
 
+    // Get current day and date
+    DateTime now = new DateTime.now();
+    String formattedDay =  DateFormat('EEEE').format(now);
+    String formattedDate = DateFormat('MM.dd.yyyy').format(now);
+
     return Scaffold(
       appBar: AppBar(
           title: Text('Daily Menu'),
@@ -65,14 +71,12 @@ class DailyMenuState extends State<DailyMenu> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Dan", style: new TextStyle(
-                  fontSize: 23.0, fontWeight: FontWeight.bold)),
+              padding: const EdgeInsets.fromLTRB(32, 16, 10, 0),
+              child: Text("$formattedDay", style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.w900)),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Datum", style: new TextStyle(
-                  fontSize: 18.0, fontWeight: FontWeight.normal)),
+              padding: const EdgeInsets.fromLTRB(32, 3, 10, 16),
+              child: Text("$formattedDate", style: new TextStyle(color: Color(0xff959597), fontSize: 18.0, fontWeight: FontWeight.normal)),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
