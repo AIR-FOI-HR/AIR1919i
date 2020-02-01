@@ -5,12 +5,23 @@ import 'package:mobile_app/views/weekly_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_app/providers/auth.dart';
 import 'package:mobile_app/utils/slide_route.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
 //    print(ModalRoute.of(context).settings.name); TODO => Highlight current route in navigation drawer
+
+    Future<String> _getUserImage() async{
+      final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+      return sharedPrefs.getString('img');
+    }
+
+    Future<String> _getUserName() async{
+      final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+      return sharedPrefs.getString('name');
+    }
 
     return  Drawer(
         child: Container(color: Colors.black87,
@@ -28,16 +39,28 @@ class NavigationDrawer extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 20.0, top: 12.0),
                         child: ClipRRect(
                           borderRadius: new BorderRadius.circular(50.0),
-                          child: Image.asset(
-                              'assets/images/butterflywings55.jpg',
-                              width: 75,
-                              height: 75
-                          ),
+                          child: FutureBuilder<String>(
+                              future: _getUserImage(),
+                              initialData: 'http://192.168.0.43:8000/img/DefaultUserImage.png',
+                              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                return snapshot.hasData ?
+                                Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/DefaultUserImage.png', width: 75, height: 75) :
+                                CircularProgressIndicator();
+                              }
+                            ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0, top: 8.0),
-                        child: Text('butterflywings55', style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w500)),
+                        child: FutureBuilder<String>(
+                            future: _getUserName(),
+                            initialData: 'username',
+                            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                              return snapshot.hasData ?
+                              Text(snapshot.data, style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w500)) :
+                              CircularProgressIndicator();
+                            }
+                        ),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(top: 5.0),
