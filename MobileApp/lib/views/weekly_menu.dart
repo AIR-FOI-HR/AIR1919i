@@ -14,7 +14,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
   void _onItemTappedForTabBar(int index) {
     setState(() {
       _selectedIndexForTabBar  = index+1;
-      _selectedIndexForTabBar > 6 ? _selectedIndexForTabBar == 0 : _selectedIndexForTabBar==index+1;
+      _selectedIndexForTabBar > 6 ? _selectedIndexForTabBar = 0 : _selectedIndexForTabBar = index+1;
     });
   }
 
