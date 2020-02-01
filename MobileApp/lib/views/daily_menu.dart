@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +48,17 @@ class DailyMenuState extends State<DailyMenu> {
     meals[2] = meal_3;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Daily Menu'), backgroundColor: Colors.black87),
+      appBar: AppBar(
+          title: Text('Daily Menu'),
+          backgroundColor: Colors.black87,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset("assets/images/Logo.png",
+                height: 45,
+              width: 55,),
+            )]
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
