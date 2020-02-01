@@ -6,29 +6,33 @@ String mealToJson(List<Meal> data) => json.encode(new List<dynamic>.from(data.ma
 
 class Meal {
     int id;
+    double price;
     String name;
     String description;
     DateTime createdAt;
     DateTime updatedAt;
 
-    Meal({
-      this.id,
-      this.name,
-      this.description,
-      this.createdAt,
-      this.updatedAt,
-    });
-
     factory Meal.fromJson(Map<String, dynamic> json) => new Meal(
       id: json["id"],
+      price: json["price"],
       name: json["name"],
       description: json["description"],
       createdAt: DateTime.parse(json["created_at"]),
       updatedAt: DateTime.parse(json["updated_at"])
     );
 
+    Meal({
+      this.id,
+      this.price,
+      this.name,
+      this.description,
+      this.createdAt,
+      this.updatedAt,
+    });
+
     Map<String, dynamic> toJson() => {
       "id": id,
+      "price": price,
       "name": name,
       "description": description,
       "created_at": createdAt.toIso8601String(),
