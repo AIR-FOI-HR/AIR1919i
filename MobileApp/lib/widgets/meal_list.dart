@@ -3,7 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
 
 Widget mealList(BuildContext context, List<Meal> meals) {
-  return ListView.separated(
+  return
+    meals.length < 1 ?
+    Padding(
+        padding: const EdgeInsets.fromLTRB(23, 0, 15, 0),
+        child: Row(
+          children: [
+            Column(
+              children: [
+                Row(
+                  children: [Text("It looks like there are no meals on the menu today.", style: TextStyle(fontWeight: FontWeight.bold))]
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Row(
+                       children: [Image.asset("assets/images/SadFace.png", width: 45)]
+                  )
+                )
+              ])
+        ]
+    )) :
+    ListView.separated(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: meals.length,
