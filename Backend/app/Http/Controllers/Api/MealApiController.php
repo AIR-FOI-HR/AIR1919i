@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Rating;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\MealCollection;
@@ -19,9 +20,15 @@ class MealApiController extends ApiController
      */
     public function index(Request $request)
     {
-        // TODO => Check if param weekly or daily sent, if yes return different result
         if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        return new MealCollection(Meal::paginate());
+
+        $validator = Validator::make($request->all(), ['daily' => 'required|integer|in:0,1']);
+
+        if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
+
+        if ($request->daily) return new MealCollection(Meal::whereHas('weeklyMenu', function ($query) { $query->where('day', Carbon::today()->dayOfWeek);})->paginate());
+
+        return Meal::join('weekly_menu', 'meals.id', 'weekly_menu.meal_id')->get()->groupBy('day')->sort();
     }
 
     /**
@@ -49,8 +56,19 @@ class MealApiController extends ApiController
     {
         if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
         try {
-            $meal = Meal::findOrFail($id)->firstOrFail();
-            if ($request->add_to_favorites) $user->favoriteMeals()->toggle($meal->id);
+            $meal = Meal::findOrFail($id);
+
+            $validator = Validator::make($request->all(), [
+                'toggle_favorite' => 'integer|in:0,1',
+                'review' => 'integer|:in:0,1',
+            ]);
+
+            if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
+
+            if ($request->toggle_favorite) {
+                $user->favoriteMeals()->toggle($meal->id);
+                return $this->responseResourceUpdated();
+            }
             else if ($request->review) {
 
                 $validator = Validator::make($request->all(), [

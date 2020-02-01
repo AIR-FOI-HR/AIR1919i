@@ -4,29 +4,27 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rating extends Model
+class WeeklyMenu extends Model
 {
+    // Day 1 is Monday
+    // ...
+    // Day 6 is Saturday
+    // Day 0 is Sunday
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'meal_id', 'user_id', 'stars', 'comment'
+        'day', 'meal_id'
     ];
 
-    /**
-     * Rating BELONGS TO User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $table = 'weekly_menu';
+
 
     /**
-     * Rating BELONGS TO Meal
+     * WeeklyMenu BELONGS TO Meal
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

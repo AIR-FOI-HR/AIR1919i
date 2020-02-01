@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('img')->nullable();
             $table->unsignedTinyInteger('signatures_count')->default(0);
             $table->rememberToken();
+            $table->string('firebase_token')->nullable();
             $table->timestamps();
         });
     }

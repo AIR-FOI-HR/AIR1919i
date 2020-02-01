@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class WeeklyMenu extends Migration
+class CreateQrCodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class WeeklyMenu extends Migration
      */
     public function up()
     {
-        Schema::create('weekly_menu', function (Blueprint $table) {
-            $table->unsignedTinyInteger('day');
-            $table->bigInteger('meal_id')->unsigned();
-
-            $table->foreign('meal_id')->references('id')->on('meals')->onDelete('CASCADE');
+        Schema::create('qr_codes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('code');
+            $table->text('img');
+            $table->tinyInteger('max_scan_times');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +29,6 @@ class WeeklyMenu extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('weekly_menu');
+        Schema::dropIfExists('qr_codes');
     }
 }
