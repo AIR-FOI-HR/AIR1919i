@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "112059006050",
+    "firebase_url": "https://bistro-deno.firebaseio.com",
+    "project_id": "bistro-deno",
+    "storage_bucket": "bistro-deno.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112059006050:android:e5ae1f18aa418c2627253b",
+        "android_client_info": {
+          "package_name": "com.app.mobile_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112059006050-u3u1pnk1m6pe8m047v9gv9rbalqmrhas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ6YBomfyimTlCeD4Ck7XE8g_X5llhrGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112059006050-u3u1pnk1m6pe8m047v9gv9rbalqmrhas.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

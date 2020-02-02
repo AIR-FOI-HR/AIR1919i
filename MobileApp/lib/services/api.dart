@@ -35,7 +35,7 @@ class ApiService {
   // Returns a list of meals.
   Future<MealResponse> getMeals() async {
 
-    final url = "$api/meals";
+    final url = "$api/meals?daily=1";
     final response = await http.get(
       url,
       headers: {
@@ -50,8 +50,6 @@ class ApiService {
 
     List<Meal> meals = mealFromJson(json.encode(data));
 
-    String next = apiResponse['links']['next'];
-
-    return MealResponse(meals, next);
+    return MealResponse(meals);
   }
 }

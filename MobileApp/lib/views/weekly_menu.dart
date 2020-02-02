@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
 import 'package:mobile_app/widgets/meal_list.dart';
 import 'package:mobile_app/widgets/navigation_drawer.dart';
+import 'package:intl/intl.dart';
 
 class WeeklyMenu extends StatefulWidget {
   @override
@@ -9,23 +10,30 @@ class WeeklyMenu extends StatefulWidget {
 }
 
 class WeeklyMenuState extends State<WeeklyMenu>{
-  int _selectedIndexForTabBar = 0;
+
+  int _selectedIndexForTabBar = 1;
 
   void _onItemTappedForTabBar(int index) {
     setState(() {
-      _selectedIndexForTabBar  = index+1;
-      _selectedIndexForTabBar > 6 ? _selectedIndexForTabBar == 0 : _selectedIndexForTabBar==index+1;
+      _selectedIndexForTabBar++;
+      _selectedIndexForTabBar =  _selectedIndexForTabBar  > 6 ?  0 : index + 1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
 
-    final tabBar = new TabBar(labelColor: Colors.white,labelStyle: TextStyle(fontSize: 16),
+    // Get current day and date
+    DateTime now = new DateTime.now();
+    String formattedDate = DateFormat('MM.dd.yyyy').format(now);
+
+    final tabBar = new TabBar(
+      labelColor: Colors.white,
+      labelStyle: TextStyle(fontSize: 16),
       isScrollable: true,
       onTap: _onItemTappedForTabBar,
       unselectedLabelColor: Colors.grey,
-      indicatorColor: Colors.yellow,
+      indicatorColor: Color(0xffFFB200),
       tabs: <Widget>[
         new Tab(
           text: " MON ",
@@ -51,6 +59,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
       ],
     );
 
+    // Testing data
     final meal_1 = new Meal();
     meal_1.id = 1;
     meal_1.name = 'Hamburger';
@@ -73,6 +82,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
     meals[2] = meal_3;
 
     return new DefaultTabController(
+        initialIndex: now.weekday - 1,
         length: 7,
         child: new Scaffold(
             appBar: new AppBar(
@@ -87,27 +97,23 @@ class WeeklyMenuState extends State<WeeklyMenu>{
                 )],
               bottom: tabBar),
           body: SingleChildScrollView(
-        child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text( _selectedIndexForTabBar==1 ? "Monday" : _selectedIndexForTabBar==2 ? "Tuesday" :
-                  _selectedIndexForTabBar==3 ? "Wednesday" : _selectedIndexForTabBar==4 ? "Thursday" :
-                  _selectedIndexForTabBar==5 ? "Friday" : _selectedIndexForTabBar==6 ? "Saturday" : "Sunday",
-                  style: new TextStyle(fontSize: 23.0,
-                      fontWeight: FontWeight.bold)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Datum", style: new TextStyle(
-                  fontSize: 18.0, fontWeight: FontWeight.normal)),
-            ),
-            Padding(
-                padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
-                child: mealList(context, meals))
-          ],
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(32, 25, 10, 0),
+                    child: Text( _selectedIndexForTabBar == 1 ? "Monday" : _selectedIndexForTabBar == 2 ? "Tuesday" : _selectedIndexForTabBar == 3 ? "Wednesday" : _selectedIndexForTabBar == 4 ? "Thursday" : _selectedIndexForTabBar == 5 ? "Friday" : _selectedIndexForTabBar == 6 ? "Saturday" : "Sunday", style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(32, 3, 10, 16),
+                    child: Text("$formattedDate", style: new TextStyle(
+                        fontSize: 18.0, fontWeight: FontWeight.normal)),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
+                      child: mealList(context, meals))
+                ],
         ),
     ),
           drawer: NavigationDrawer(),
