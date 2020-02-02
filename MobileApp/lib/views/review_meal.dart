@@ -201,6 +201,14 @@ class _ReviewMealState extends State<ReviewMeal> {
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
           changeFloatingIcon();
+          final snackBar = SnackBar(
+              elevation: 6.0,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: icon == Icons.favorite ? Colors.green : Colors.red,
+              content:
+              icon == Icons.favorite ? Text("Hamburger was added to favorites.") :
+              Text("Hamburger removed from favorites"));
+          scaffold_state.currentState.showSnackBar(snackBar);
         },
         child: new Icon(icon, size: 25.0),
         heroTag: null,
