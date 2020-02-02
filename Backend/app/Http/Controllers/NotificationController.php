@@ -3,20 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // TODO => Get users which have firebase_tokens, which have favorite meals and if their favorite meal is on today's week menu
-        $tokens = User::select('firebase_token')
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'message' => 'required',
+        ]);
+
+        if ($validator->fails()) return redirect()->back();
+
+        Log::info('Sending notifications to users.');
+
+        $tokens = User::select('id', 'firebase_token')
             ->whereNotNull('firebase_token')
+            ->whereHas('favoriteMeals')
+            ->whereHas('favoriteMeals.weeklyMenu', function ($query) {
+                $query->where('day', Carbon::today()->dayOfWeek);
+            })
             ->get()
             ->pluck('firebase_token')
-            ->toArray();
+            ->toArray();;
 
-        if (count($tokens) == 0) return;
+        if (count($tokens) == 0) {
+            Log::info('No users with firebase tokens found.');
+            return redirect()->back();
+        }
+
         try {
             $client = new \GuzzleHttp\Client();
             $client->request('POST', 'https://fcm.googleapis.com/fcm/send', [
@@ -27,8 +46,8 @@ class NotificationController extends Controller
                 'json' => [
                     'registration_ids' => $tokens,
                     'notification' => [
-                        'title' => 'Your meal is on the menu today!',
-                        'body' => 'One of your favorite meals is on the menu today. Check it out!',
+                        'title' => $request->title,
+                        'body' => $request->message,
                         'sound' => 'default'
                     ]
                 ]
@@ -36,5 +55,8 @@ class NotificationController extends Controller
         } catch (\Exception $e) {
             Log::warning('Notification sending failed with error: ' . $e->getMessage());
         }
+
+        Log::info('Successfully sent notifications to ' . count($tokens) . ' users.');
+        return redirect()->back();
     }
 }
