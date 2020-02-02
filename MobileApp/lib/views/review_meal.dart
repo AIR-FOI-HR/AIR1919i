@@ -16,6 +16,18 @@ class _ReviewMealState extends State<ReviewMeal> {
   final reviewText = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  void submitDataReview(){
+    if(reviewText.text.isEmpty){
+      return;
+    }
+    else {
+      final ratingStar = rating;
+      final reviewTxt = reviewText.text;
+      visible = false;
+      reviewText.text = "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -152,7 +164,12 @@ class _ReviewMealState extends State<ReviewMeal> {
                           borderSide: BorderSide(color: Color(0xffFFB200)),
                         ),
                       ),
-
+                    validator: (value) {
+                      if(value.isEmpty) {
+                        return "Please enter some text";
+                      }
+                      return null;
+                    }
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -160,7 +177,13 @@ class _ReviewMealState extends State<ReviewMeal> {
                     child: RaisedButton(
                         color: Color(0xffFFB200),
                         onPressed: () {
-
+                          if (_formKey.currentState.validate()) {
+                              submitDataReview();
+                              setState(() {
+                                visible = false;
+                                rating = 0.0;
+                              });
+                          }
                         },
                         child: Text('Post', style: TextStyle(fontSize: 14, color: Colors.white))),
                   ),
