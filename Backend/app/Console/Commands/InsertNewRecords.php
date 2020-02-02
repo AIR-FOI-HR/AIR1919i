@@ -101,6 +101,18 @@ class InsertNewRecords extends Command
 
         // Populate qr_code_user table
 
+//        $qr_code = new QrCode();
+//        $qr_code->code = '0XaYtF2IWz8mcFo31SmonV1W5NvlIP6Z';
+//        $qr_code->img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOcAAADnAQMAAADfOtNjAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAUhJREFUWIXtmDGSgzAMReWhoOQIPgpHw0fjKDkCZQqPtV+yncBstto0n7EaHL80H0nfMiIjRoz4Rixq8VweawpZ8PDfD2Zqi+n5eqypb/LSVQu2IVImCF2Tq78BtQyqHnIbKtiG3ntQ8WJUTepdluRDxVLRt2/URP7lKjS0R9RamvIxmOiiu0AvalKLp24Ll7fBRyXumx1T1QmPuEu5vAZCCqGh6jUnrImkptZXIc+Qa11mpemGSEwtg37w2np2b8/X/NJRpE4ztsX/hJ4r09kJ+WjzDU+k2zoyeKpJSopiROqaYUTXezBTC/gGZG+a36cxOW2y/fYkUiuUlzaF3mza7hrKTaHQ59h9qxPFtWIp6ev2VAf0NirRU6zQZbNn8XRaMdNoGXQazl1GSaV/Vyn9hvu7Yqlod3P79jXbHOv2QUxHjBjxv/gBIagDHqXVCVEAAAAASUVORK5CYII=';
+//        $qr_code->max_scan_times = 10;
+//        $qr_code->save();
+//
+//        $qr_code = new QrCode();
+//        $qr_code->code = '6zu958HB8wM39fpqcNchkhaFUSmlE4SI';
+//        $qr_code->img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOcAAADnAQMAAADfOtNjAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAATFJREFUWIXtlzESwjAMBC+TgpIn8JQ8LXlansITKFNkLHSSgTCECprLWE1srRtNzicLaNGixT/ibIzFV2N8hthflSkX/YKLWek9PUyPpC4dPL2cmU7qZR+Bsl6nNxyHMo5CEZr0WwacvilWiqZvUJMpzT1XkaJvh/wP7oYU9fSUFY62wi/bhKpQXTqP3XpioSXu3IQ3TQpSV2Fn1duXV/XiNH6dGcse+BGnboFh6paajLNQpjbD01RhqQrdditBigv30XiZ9rPd1tsFafSnVGEWSheRpnRzPslZ6JpNS52+yi6IdNl4uyLdvJH2Zg1FykUfYqz2YdmNhWnOg954n5r8nHAFKR7dKnzRDkCjW3HQnce6E6YITbINR7fiWPihWClafcNpvigQ9iFMW7Ro8VvcAd6O/CvdyOt6AAAAAElFTkSuQmCC';
+//        $qr_code->max_scan_times = 10;
+//        $qr_code->save();
+
         // Monday
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 5;
@@ -166,23 +178,23 @@ class InsertNewRecords extends Command
 //
 //        // Thursday
 //        $weekly_menu = new WeeklyMenu();
-//        $weekly_menu->day = 4;
-//        $weekly_menu->meal_id = 56;
+//        $weekly_menu->day = 0;
+//        $weekly_menu->meal_id = 8;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
-//        $weekly_menu->day = 4;
-//        $weekly_menu->meal_id = 57;
+//        $weekly_menu->day = 0;
+//        $weekly_menu->meal_id = 7;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
-//        $weekly_menu->day = 4;
-//        $weekly_menu->meal_id = 58;
+//        $weekly_menu->day = 0;
+//        $weekly_menu->meal_id = 6;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
-//        $weekly_menu->day = 4;
-//        $weekly_menu->meal_id = 59;
+//        $weekly_menu->day = 0;
+//        $weekly_menu->meal_id = 5;
 //        $weekly_menu->save();
 //
 //        // Friday
@@ -209,43 +221,43 @@ class InsertNewRecords extends Command
 //        // Saturday
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 6;
-//        $weekly_menu->meal_id = 64;
+//        $weekly_menu->meal_id = 22;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 6;
-//        $weekly_menu->meal_id = 65;
+//        $weekly_menu->meal_id = 23;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 6;
-//        $weekly_menu->meal_id = 66;
+//        $weekly_menu->meal_id = 24;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 6;
-//        $weekly_menu->meal_id = 67;
+//        $weekly_menu->meal_id = 25;
 //        $weekly_menu->save();
 //
 //        // Sunday
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 0;
-//        $weekly_menu->meal_id = 68;
+//        $weekly_menu->meal_id = 1;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 0;
-//        $weekly_menu->meal_id = 69;
+//        $weekly_menu->meal_id = 2;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 0;
-//        $weekly_menu->meal_id = 70;
+//        $weekly_menu->meal_id = 3;
 //        $weekly_menu->save();
 //
 //        $weekly_menu = new WeeklyMenu();
 //        $weekly_menu->day = 0;
-//        $weekly_menu->meal_id = 71;
+//        $weekly_menu->meal_id = 4;
 //        $weekly_menu->save();
     }
 }
