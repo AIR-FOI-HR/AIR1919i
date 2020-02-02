@@ -86,59 +86,52 @@ class MyProfile extends StatelessWidget {
                 }
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 30, 20, 2),
+              padding: const EdgeInsets.all(6.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
                       flex: 6,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(90, 0, 0, 0),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.favorite),
-                            Text(" 10",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),)
-                          ],
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.favorite),
+                          Text(" 10",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),)
+                        ],
                       )),
                   Expanded(
                       flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.star),
-                            Text(" 5",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
-                          ],
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.star),
+                          Text(" 5",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
+                        ],
                       )),
                 ],
               ),
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                    flex: 7,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(90, 0, 0, 40),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      flex: 6,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text("Favorite Meals",style: TextStyle(color: Colors.grey, fontSize: 14),)
                         ],
-                      ),
-                    )),
-                Expanded(
-                    flex: 6,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(50, 0, 0, 40),
+                      )),
+                  Expanded(
+                      flex: 5,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text("Reviews Left",style: TextStyle(color: Colors.grey, fontSize: 14),)
                         ],
-                      ),
-                    )),
-              ],
+                      )),
+                ],
+              ),
             ),
             Text("Favorite Meals", style: TextStyle(
                 fontSize: 25,
@@ -149,7 +142,7 @@ class MyProfile extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.28,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: 8,
                   itemBuilder: (context, index) {
                     return Container(
                       width: MediaQuery.of(context).size.width * 0.4,
