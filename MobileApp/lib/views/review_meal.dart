@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ReviewMeal extends StatelessWidget{
+class ReviewMeal extends StatefulWidget{
   @override
+  _ReviewMealState createState() => _ReviewMealState();
+}
 
+class _ReviewMealState extends State<ReviewMeal> {
+
+  GlobalKey<ScaffoldState> scaffold_state = new GlobalKey<ScaffoldState>();
+
+  IconData icon = Icons.favorite_border;
+
+  @override
   Widget build(BuildContext context) {
 
     Future<String> _getUserImage() async{
@@ -25,6 +34,7 @@ class ReviewMeal extends StatelessWidget{
               ),
             )
           ]),
+      key: scaffold_state,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -146,14 +156,31 @@ class ReviewMeal extends StatelessWidget{
               ),
             ),
             Container(
-              height: 220,
+              height: 233,
               child: ListView.builder(
-                itemCount: 3,
+                itemCount: 4,
                 itemBuilder: (context, index){
                   return ListTile(
                     leading: Icon(Icons.person, size: 30),
                     title: Text("Ime Prezime"),
-                    subtitle: Text("Komentar....")
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Komentar...."),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.star, color: Colors.yellow[500],size: 13.0),
+                              Icon(Icons.star, color: Colors.yellow[500],size: 13.0),
+                              Icon(Icons.star, color: Colors.yellow[500],size: 13.0),
+                              Icon(Icons.star, color: Colors.yellow[500],size: 13.0),
+                              Icon(Icons.star_border, color: Colors.yellow[500],size: 13.0),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
                   );
                 }
               )
@@ -170,8 +197,22 @@ class ReviewMeal extends StatelessWidget{
         ),
           ],
         ),
-      )
+      ),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {
+          changeFloatingIcon();
+        },
+        child: new Icon(icon, size: 25.0),
+        heroTag: null,
+        backgroundColor: Color(0xffFD0034),
+      ),
     );
   }
 
+  void changeFloatingIcon(){
+    setState(() {
+      icon = icon == Icons.favorite_border ? Icons.favorite : Icons.favorite_border;
+    }
+    );
+  }
 }
