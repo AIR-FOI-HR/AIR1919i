@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ReviewMeal extends StatefulWidget{
   @override
@@ -9,8 +10,8 @@ class ReviewMeal extends StatefulWidget{
 class _ReviewMealState extends State<ReviewMeal> {
 
   GlobalKey<ScaffoldState> scaffold_state = new GlobalKey<ScaffoldState>();
-
   IconData icon = Icons.favorite_border;
+  var rating = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                       Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
                       Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
                       Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                      Icon(Icons.star, color: Colors.grey,size: 16.0),
+                      Icon(Icons.star_border, color: Color(0xffFFB200),size: 16.0),
                     ],
                   ),
                 ),
@@ -118,18 +119,17 @@ class _ReviewMealState extends State<ReviewMeal> {
               ),
             ),
             Center(child: Text("Rate and review", style: TextStyle(fontWeight: FontWeight.bold))),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,8,0,2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.star_border, color: Colors.yellow[500],size: 25.0),
-                  Icon(Icons.star_border, color: Colors.yellow[500],size: 25.0),
-                  Icon(Icons.star_border, color: Colors.yellow[500],size: 25.0),
-                  Icon(Icons.star_border, color: Colors.yellow[500],size: 25.0),
-                  Icon(Icons.star_border, color: Colors.yellow[500],size: 25.0),
-                ],
-              ),
+            SmoothStarRating(
+              color: Color(0xffFFB200),
+              borderColor: Color(0xffFFB200),
+              rating: rating,
+              size: 30,
+              starCount: 5,
+              onRatingChanged: (value) {
+                setState(() {
+                  rating = value;
+                });
+              },
             ),
             Divider(),
             Padding(
@@ -171,11 +171,11 @@ class _ReviewMealState extends State<ReviewMeal> {
                           padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
                           child: Row(
                             children: [
-                              Icon(Icons.star, color: Colors.yellow[500],size: 13.0),
-                              Icon(Icons.star, color: Colors.yellow[500],size: 13.0),
-                              Icon(Icons.star, color: Colors.yellow[500],size: 13.0),
-                              Icon(Icons.star, color: Colors.yellow[500],size: 13.0),
-                              Icon(Icons.star_border, color: Colors.yellow[500],size: 13.0),
+                              Icon(Icons.star, color: Colors.orangeAccent,size: 13.0),
+                              Icon(Icons.star, color: Colors.orangeAccent,size: 13.0),
+                              Icon(Icons.star, color: Colors.orangeAccent,size: 13.0),
+                              Icon(Icons.star, color: Colors.orangeAccent,size: 13.0),
+                              Icon(Icons.star_border, color: Colors.orangeAccent,size: 13.0),
                             ],
                           ),
                         ),
@@ -190,7 +190,7 @@ class _ReviewMealState extends State<ReviewMeal> {
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: RaisedButton(
-                color: Colors.orange.shade500,
+                color: Color(0xffFFB200),
                 onPressed: () {},
                 child: Text('Load More Reviews', style: TextStyle(fontSize: 14, color: Colors.white))),
           ),
