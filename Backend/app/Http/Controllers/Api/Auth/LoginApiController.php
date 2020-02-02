@@ -27,7 +27,8 @@ class LoginApiController extends APIController
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => [
                 'id' => $user->id,
-                'name' => $user->name
+                'name' => $user->name,
+                'img' => $user->img ? url('/') . '/' . $user->img : 'NO_IMAGE_SET'
             ]
         ], 200);
     }
