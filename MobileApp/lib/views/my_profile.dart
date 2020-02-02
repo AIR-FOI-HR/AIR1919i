@@ -86,7 +86,7 @@ class MyProfile extends StatelessWidget {
                 }
             ),
             Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.fromLTRB(0,15,0,0),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -157,7 +157,7 @@ class MyProfile extends StatelessWidget {
                                   width: 30,
                                   height: 30,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(70),
+                                    borderRadius: BorderRadius.circular(80),
                                     color: Color(0xffFD0034),
                                   ),
                                   child: Padding(
@@ -175,20 +175,26 @@ class MyProfile extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(6.0),
                                     child: Image.asset("assets/images/hamburger.jpg",
                                         width: 120)),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
                                 child: Text("Name",
-                                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                                    style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                child: Text("Name", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
+                                  Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
+                                  Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
+                                  Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
+                                  Icon(Icons.star, color: Colors.grey,size: 15.0),
+                                ],
                               ),
                             ],
                           ),
@@ -202,7 +208,7 @@ class MyProfile extends StatelessWidget {
                 fontWeight: FontWeight.bold
             ),),
             Padding(
-              padding: const EdgeInsets.all(13.0),
+              padding: const EdgeInsets.all(10.0),
               child: Text("On the receipt there's a QR code which you are able to scan. "
                   "For every QR code scanned you profress by 10%. After 10 meals your "
                   "next meal is free of charge! You have 7 signatures."),
@@ -214,7 +220,7 @@ class MyProfile extends StatelessWidget {
                 lineHeight: 30.0,
                 percent: signatureNumber/10,
                 center: Text(
-                  "70.0%",
+                  "70 %",
                   style: new TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 linearStrokeCap: LinearStrokeCap.roundAll,
