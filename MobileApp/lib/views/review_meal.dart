@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/views/list_reviews.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
@@ -38,7 +39,7 @@ class _ReviewMealState extends State<ReviewMeal> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text('Meal Detail'),
+          title: Text('Meal reviews'),
           backgroundColor: Colors.black87,
           actions: <Widget>[
             Padding(
@@ -210,24 +211,27 @@ class _ReviewMealState extends State<ReviewMeal> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("3 total",style: TextStyle(color: Colors.grey, fontSize: 14),)
+                          Text("55 total",style: TextStyle(color: Colors.grey, fontSize: 14),)
                         ],
                       )),
                 ],
               ),
             ),
             Container(
-              height: 165,
+              height: visible==true ? 175 : 265,
               child: ListView.builder(
-                itemCount: 3,
+                itemCount: 4,
                 itemBuilder: (context, index){
                   return ListTile(
-                    leading: Icon(Icons.person, size: 30),
+                      leading: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: ExactAssetImage("assets/images/butterflywings55.jpg")
+                      ),
                     title: Text("Ime Prezime"),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Komentar...."),
+                        Text("Komentar Komentar Komentar Komentar Komentar Komentar Komentar Komentar"),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                           child: Row(
@@ -240,6 +244,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                             ],
                           ),
                         ),
+                        new Divider(color: Colors.black54)
                       ],
                     )
                   );
@@ -253,7 +258,13 @@ class _ReviewMealState extends State<ReviewMeal> {
             padding: const EdgeInsets.all(5.0),
             child: RaisedButton(
                 color: Color(0xffFFB200),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => ListReviews()
+                  ));
+                },
                 child: Text('Load More Reviews', style: TextStyle(fontSize: 13, color: Colors.white))),
           ),
         ),
