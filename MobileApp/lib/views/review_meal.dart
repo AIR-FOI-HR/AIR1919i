@@ -12,6 +12,9 @@ class _ReviewMealState extends State<ReviewMeal> {
   GlobalKey<ScaffoldState> scaffold_state = new GlobalKey<ScaffoldState>();
   IconData icon = Icons.favorite_border;
   var rating = 0.0;
+  bool visible = false;
+  final reviewText = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -123,17 +126,52 @@ class _ReviewMealState extends State<ReviewMeal> {
               color: Color(0xffFFB200),
               borderColor: Color(0xffFFB200),
               rating: rating,
-              size: 30,
+              size: 25,
               starCount: 5,
               onRatingChanged: (value) {
                 setState(() {
                   rating = value;
+                  visible = true;
                 });
               },
             ),
+        Visibility(
+            visible: visible,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    controller: reviewText,
+                    decoration: new InputDecoration(
+                        hintText: "What did you think about this meal?",
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffFFB200)),
+                        ),
+                      ),
+
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 25,
+                    child: RaisedButton(
+                        color: Color(0xffFFB200),
+                        onPressed: () {
+
+                        },
+                        child: Text('Post', style: TextStyle(fontSize: 14, color: Colors.white))),
+                  ),
+                ],
+              )
+            ),
+          )
+        ),
             Divider(),
             Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.fromLTRB(0, 2, 2, 2),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -149,16 +187,16 @@ class _ReviewMealState extends State<ReviewMeal> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("255 total",style: TextStyle(color: Colors.grey, fontSize: 14),)
+                          Text("3 total",style: TextStyle(color: Colors.grey, fontSize: 14),)
                         ],
                       )),
                 ],
               ),
             ),
             Container(
-              height: 233,
+              height: 165,
               child: ListView.builder(
-                itemCount: 4,
+                itemCount: 3,
                 itemBuilder: (context, index){
                   return ListTile(
                     leading: Icon(Icons.person, size: 30),
@@ -168,14 +206,14 @@ class _ReviewMealState extends State<ReviewMeal> {
                       children: <Widget>[
                         Text("Komentar...."),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                           child: Row(
                             children: [
-                              Icon(Icons.star, color: Colors.orangeAccent,size: 13.0),
-                              Icon(Icons.star, color: Colors.orangeAccent,size: 13.0),
-                              Icon(Icons.star, color: Colors.orangeAccent,size: 13.0),
-                              Icon(Icons.star, color: Colors.orangeAccent,size: 13.0),
-                              Icon(Icons.star_border, color: Colors.orangeAccent,size: 13.0),
+                              Icon(Icons.star, color: Colors.orangeAccent,size: 12.0),
+                              Icon(Icons.star, color: Colors.orangeAccent,size: 12.0),
+                              Icon(Icons.star, color: Colors.orangeAccent,size: 12.0),
+                              Icon(Icons.star, color: Colors.orangeAccent,size: 12.0),
+                              Icon(Icons.star_border, color: Colors.orangeAccent,size: 12.0),
                             ],
                           ),
                         ),
@@ -187,12 +225,13 @@ class _ReviewMealState extends State<ReviewMeal> {
             ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
+          height: 37,
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: RaisedButton(
                 color: Color(0xffFFB200),
                 onPressed: () {},
-                child: Text('Load More Reviews', style: TextStyle(fontSize: 14, color: Colors.white))),
+                child: Text('Load More Reviews', style: TextStyle(fontSize: 13, color: Colors.white))),
           ),
         ),
           ],
@@ -204,7 +243,7 @@ class _ReviewMealState extends State<ReviewMeal> {
           final snackBar = SnackBar(
               elevation: 6.0,
               behavior: SnackBarBehavior.floating,
-              backgroundColor: icon == Icons.favorite ? Colors.green : Colors.red,
+              backgroundColor: Colors.green,
               content:
               icon == Icons.favorite ? Text("Hamburger was added to favorites.") :
               Text("Hamburger removed from favorites"));
