@@ -9,6 +9,8 @@ class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    GlobalKey<ScaffoldState> scaffold_state = new GlobalKey<ScaffoldState>();
+
     int signatureNumber = 7;
     String naziv = "Hamburger";
 
@@ -57,6 +59,7 @@ class MyProfile extends StatelessWidget {
               ),
             )
           ]),
+      key: scaffold_state,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -179,6 +182,13 @@ class MyProfile extends StatelessWidget {
                                   icon: Icon(Icons.favorite),
                                   color: Colors.white,
                                   onPressed: () {
+                                    final snackBar = SnackBar(
+                                        elevation: 6.0,
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.green,
+                                        content:
+                                        Text("Hamburger removed from favorites."));
+                                    scaffold_state.currentState.showSnackBar(snackBar);
                                   },
                                 ),
                               ),
