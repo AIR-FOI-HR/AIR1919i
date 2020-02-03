@@ -156,21 +156,24 @@ class _ReviewMealState extends State<ReviewMeal> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    controller: reviewText,
-                    decoration: new InputDecoration(
-                        hintText: "What did you think about this meal?",
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xffFFB200)),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0,0,0,7),
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: reviewText,
+                      decoration: new InputDecoration(
+                          hintText: "What did you think about this meal?",
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffFFB200)),
+                          ),
                         ),
-                      ),
-                    validator: (value) {
-                      if(value.isEmpty) {
-                        return "Please enter some text";
+                      validator: (value) {
+                        if(value.isEmpty) {
+                          return "Please enter some text";
+                        }
+                        return null;
                       }
-                      return null;
-                    }
+                    ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -218,7 +221,7 @@ class _ReviewMealState extends State<ReviewMeal> {
               ),
             ),
             Container(
-              height: visible==true ? 175 : 265,
+              height: visible==true ? 168 : 265,
               child: ListView.builder(
                 itemCount: 4,
                 itemBuilder: (context, index){
@@ -253,7 +256,7 @@ class _ReviewMealState extends State<ReviewMeal> {
             ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 37,
+          height: 38,
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: RaisedButton(
@@ -280,7 +283,7 @@ class _ReviewMealState extends State<ReviewMeal> {
               backgroundColor: Colors.green,
               content:
               icon == Icons.favorite ? Text("Hamburger was added to favorites.") :
-              Text("Hamburger removed from favorites"));
+              Text("Hamburger removed from favorites."));
           scaffold_state.currentState.showSnackBar(snackBar);
         },
         child: new Icon(icon, size: 25.0),
