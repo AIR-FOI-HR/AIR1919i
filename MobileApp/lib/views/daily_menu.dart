@@ -16,6 +16,7 @@ class DailyMenu extends StatefulWidget {
 }
 
 class DailyMenuState extends State<DailyMenu> {
+  final reviewPin = new TextEditingController();
 
   void scanQRCode() async {
     Navigator.of(context).pop();
@@ -31,13 +32,24 @@ class DailyMenuState extends State<DailyMenu> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: new Text("Your PIN"),
-          content: new Text("Forma"),
+          content: Form(
+              child: TextFormField(
+                  keyboardType: TextInputType.text,
+                  controller: reviewPin,
+                  decoration: new InputDecoration(
+                    hintText: "Enter the PIN given on your invoice",
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xffFFB200)),
+                    ),
+                  ),
+              )
+          ),
             actions: <Widget>[
               new FlatButton(
                 color: Color(0xffFFB200),
                 child: new Text("Post",style: TextStyle(color: Colors.white),),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
