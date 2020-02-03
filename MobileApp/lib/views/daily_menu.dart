@@ -42,16 +42,19 @@ class DailyMenuState extends State<DailyMenu> {
     meal_3.name = 'Pizza';
     meal_3.description = 'Such delicious.';
 
-    List<Meal> meals = List<Meal>(3);
+    List<Meal> meals = List<Meal>(6);
 
     meals[0] = meal_1;
     meals[1] = meal_2;
     meals[2] = meal_3;
+    meals[3] = meal_1;
+    meals[4] = meal_2;
+    meals[5] = meal_3;
 
     // Get current day and date
     DateTime now = new DateTime.now();
     String formattedDay =  DateFormat('EEEE').format(now);
-    String formattedDate = DateFormat('MM.dd.yyyy').format(now);
+    String formattedDate = DateFormat('MM.dd.yyyy.').format(now);
 
     return Scaffold(
       appBar: AppBar(
