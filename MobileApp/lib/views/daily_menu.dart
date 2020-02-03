@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
@@ -16,10 +18,68 @@ class DailyMenu extends StatefulWidget {
 class DailyMenuState extends State<DailyMenu> {
 
   void scanQRCode() async {
+    Navigator.of(context).pop();
     String cameraScanResult = await scanner.scan();
     print('Printing QR Code Scan Result');
     print(cameraScanResult);
     // TODO => Send (authenticated) API request to backend, validate the request and return the result.
+  }
+
+  void _showDialogPin(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Your PIN"),
+          content: new Text("Forma"),
+            actions: <Widget>[
+              new FlatButton(
+                color: Color(0xffFFB200),
+                child: new Text("Post",style: TextStyle(color: Colors.white),),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                color: Color(0xffFFB200),
+                child: new Text("Close",style: TextStyle(color: Colors.white),),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ]
+        );
+      }
+    );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Select signature collection type"),
+          content: new Text("Signature collection via PIN or by QR code scan"),
+          actions: <Widget>[
+            new FlatButton(
+              color: Color(0xffFFB200),
+              child: new Text("PIN", style: TextStyle(color: Colors.white),),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _showDialogPin();
+              },
+            ),
+            new FlatButton(
+              color: Color(0xffFFB200),
+              child: new Text("QRcode",style: TextStyle(color: Colors.white),),
+              onPressed: () {
+                scanQRCode();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -89,9 +149,9 @@ class DailyMenuState extends State<DailyMenu> {
       ),
       drawer: NavigationDrawer(),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xffFFB200),
         onPressed: () {
-          scanQRCode();
+          _showDialog();
         },
         child: Image.asset('assets/images/QRCodeScan.png', width: 35, height: 35),
       ),
