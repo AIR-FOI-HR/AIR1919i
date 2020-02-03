@@ -7,7 +7,17 @@ import 'package:mobile_app/providers/auth.dart';
 import 'package:mobile_app/utils/slide_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class NavigationDrawer extends StatelessWidget {
+enum DrawerSelection { daily, weekly, profile}
+
+class NavigationDrawer extends StatefulWidget {
+  @override
+  _NavigationDrawerState createState() => _NavigationDrawerState();
+}
+
+class _NavigationDrawerState extends State<NavigationDrawer> {
+
+  DrawerSelection _drawerSelection = DrawerSelection.daily;
+
   @override
   Widget build(BuildContext context) {
 
@@ -80,21 +90,29 @@ class NavigationDrawer extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.restaurant_menu, color: Colors.grey),
                 title: Text('Daily Menu', style: TextStyle(color: Colors.grey)),
+                  selected: _drawerSelection == DrawerSelection.daily,
                 onTap: () {
+                  _drawerSelection = DrawerSelection.daily;
+                  print(_drawerSelection);
                   Navigator.push(context, SlideRoute(page: Router(), from: 1.0));
                 }
               ),
               ListTile(
-                leading: Icon(Icons.menu, color: Colors.grey),
+                leading: Icon(Icons.menu, color: _drawerSelection== DrawerSelection.weekly ? Colors.orangeAccent:Colors.grey),
                 title: Text('Weekly Menu', style: TextStyle(color: Colors.grey)),
+                selected:  _drawerSelection == DrawerSelection.weekly,
                 onTap: () {
-                  Navigator.push(context, SlideRoute(page: WeeklyMenu(), from: 1.0));
+                    _drawerSelection = DrawerSelection.weekly;
+                    print(_drawerSelection);
+                    Navigator.push(context, SlideRoute(page: WeeklyMenu(), from: 1.0));
                 },
               ),
               ListTile(
                 leading: Icon(Icons.account_circle, color: Colors.grey),
                 title: Text('My Profile', style: TextStyle(color: Colors.grey)),
+                selected: _drawerSelection == DrawerSelection.profile,
                 onTap: () {
+                  _drawerSelection = DrawerSelection.profile;
                   Navigator.push(context, SlideRoute(page: MyProfile(), from: 1.0));
                 },
               ),
