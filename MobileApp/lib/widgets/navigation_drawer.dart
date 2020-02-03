@@ -41,10 +41,10 @@ class NavigationDrawer extends StatelessWidget {
                           borderRadius: new BorderRadius.circular(50.0),
                           child: FutureBuilder<String>(
                               future: _getUserImage(),
-                              initialData: 'http://192.168.0.43:8000/img/DefaultUserImage.png',
+                              initialData: 'http://192.168.0.43:8000/img/users/DefaultUserImage.png',
                               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                                 return snapshot.hasData ?
-                                Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/DefaultUserImage.png', width: 75, height: 75) :
+                                Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/users/DefaultUserImage.png', width: 75, height: 75) :
                                 CircularProgressIndicator();
                               }
                             ),
