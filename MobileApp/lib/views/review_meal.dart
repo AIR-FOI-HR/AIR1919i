@@ -221,7 +221,7 @@ class _ReviewMealState extends State<ReviewMeal> {
               ),
             ),
             Container(
-              height: visible==true ? 168 : 265,
+              height: visible==true ? 160 : 180,
               child: ListView.builder(
                 itemCount: 4,
                 itemBuilder: (context, index){
