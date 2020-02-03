@@ -26,7 +26,15 @@ class MealApiController extends ApiController
 
         if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
 
-        if ($request->daily) return new MealCollection(Meal::whereHas('weeklyMenu', function ($query) { $query->where('day', Carbon::today()->dayOfWeek);})->paginate());
+        if ($request->daily) return new MealCollection(
+            Meal::whereHas('weeklyMenu', function ($query) {
+                $query->where('day', Carbon::today()->dayOfWeek);
+            })->get()
+            ->transform(function ($el) {
+                $el->user_favorites = (string)$el->users->count();
+                return $el;
+            })
+        );
 
         return Meal::join('weekly_menu', 'meals.id', 'weekly_menu.meal_id')->get()->groupBy('day')->sort();
     }
