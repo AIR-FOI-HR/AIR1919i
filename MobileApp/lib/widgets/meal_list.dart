@@ -34,7 +34,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
           padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
           child: FlatButton(
             child: new Card(
-                elevation: 2,
+                elevation: 8,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
@@ -78,7 +78,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                                         width: 150)),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(12, 5, 0, 10),
+                                padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
                                 child: new Row(
                                   //mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -86,7 +86,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                                     Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
                                     Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
                                     Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                                    Icon(Icons.star, color: Colors.grey,size: 16.0),
+                                    Icon(Icons.star_border, color: Color(0xffFFB200),size: 16.0),
                                   ],
                                 ),
                               ),
@@ -106,11 +106,8 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                                     child: Text(meal.description, style: new TextStyle(color: Color(0xff959597), fontSize: 13.0, fontWeight: FontWeight.normal))
                                 ),
-                                Text(""),Text(""),Text(""),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(0.2, 0.0, 0.0, 0.0),
-                                  child: new Text("115 HRK", style: new TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold, color: Colors.black)),
-                                ),
+                                Text(""),Text(""),
+                                Text("115 HRK", style: new TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold, color: Colors.black)),
                               ],
                             ),
                           ),
