@@ -10,6 +10,7 @@ class MyProfile extends StatelessWidget {
   Widget build(BuildContext context) {
 
     int signatureNumber = 7;
+    String naziv = "Hamburger";
 
     final meal_1 = new Meal();
     meal_1.id = 1;
@@ -149,55 +150,60 @@ class MyProfile extends StatelessWidget {
                       child: Card(
                         elevation: 8,
                         child: Container(
-                          child: Column(
+                          child: Stack(
                             children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(130, 0, 0, 0),
-                                child: Container(
-                                  width: 30,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(80),
-                                    color: Color(0xffFD0034),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(5.5, 0, 0, 0),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.favorite,
-                                          color: Colors.white,
-                                          size: 15.0,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
+                              Positioned(
+                                top: 20,
+                                left: 18,
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(6.0),
                                     child: Image.asset("assets/images/hamburger.jpg",
                                         width: 120)),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
-                                child: Text("Name",
+                              Positioned(
+                                right: 0,
+                                top: 70,
+                                child: Container(
+                                  width: 37,
+                                  height: 37,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Color(0xffFD0034),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 65,
+                                left: 114,
+                                child: IconButton(
+                                  icon: Icon(Icons.favorite),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                  },
+                                ),
+                              ),
+                              Positioned(
+                                top: 98,
+                                left: (156-8*naziv.length)/2,
+                                child: Text("Hamburger",
                                     style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
-                                  Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
-                                  Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
-                                  Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
-                                  Icon(Icons.star, color: Colors.grey,size: 15.0),
-                                ],
+                              Positioned(
+                                bottom: 3,
+                                left: 40,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
+                                    Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
+                                    Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
+                                    Icon(Icons.star, color: Colors.yellow[500],size: 15.0),
+                                    Icon(Icons.star, color: Colors.grey,size: 15.0),
+                                  ],
+                                ),
                               ),
                             ],
-                          ),
+                          )
                         ),
                       ),
                     );
