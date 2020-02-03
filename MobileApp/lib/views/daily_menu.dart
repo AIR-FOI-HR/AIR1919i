@@ -115,7 +115,7 @@ class DailyMenuState extends State<DailyMenu> {
     // Get current day and date
     DateTime now = new DateTime.now();
     String formattedDay =  DateFormat('EEEE').format(now);
-    String formattedDate = DateFormat('MM.dd.yyyy.').format(now);
+    String formattedDate = DateFormat('dd.MM.yyyy.').format(now);
 
     return Scaffold(
       appBar: AppBar(
