@@ -122,10 +122,10 @@ class _ReviewMealState extends State<ReviewMeal> {
                   borderRadius: BorderRadius.circular(80.0),
                   child: FutureBuilder<String>(
                       future: _getUserImage(),
-                      initialData: 'http://192.168.0.43:8000/img/DefaultUserImage.png',
+                      initialData: 'http://192.168.0.43:8000/img/users/DefaultUserImage.png',
                       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                         return snapshot.hasData ?
-                        Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/DefaultUserImage.png', width: 100) :
+                        Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/users/DefaultUserImage.png', width: 100) :
                         CircularProgressIndicator();
                       }
                   ),
