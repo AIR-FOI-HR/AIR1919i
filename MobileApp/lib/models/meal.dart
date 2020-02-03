@@ -6,9 +6,12 @@ String mealToJson(List<Meal> data) => json.encode(new List<dynamic>.from(data.ma
 
 class Meal {
     int id;
-    double price;
+    String price;
     String name;
     String description;
+    String img;
+    String userFavorites;
+    String stars;
     DateTime createdAt;
     DateTime updatedAt;
 
@@ -17,6 +20,9 @@ class Meal {
       price: json["price"],
       name: json["name"],
       description: json["description"],
+      img: json["img"],
+      userFavorites: json["user_favorites"],
+      stars: json["stars"],
       createdAt: DateTime.parse(json["created_at"]),
       updatedAt: DateTime.parse(json["updated_at"])
     );
@@ -26,6 +32,9 @@ class Meal {
       this.price,
       this.name,
       this.description,
+      this.img,
+      this.userFavorites,
+      this.stars,
       this.createdAt,
       this.updatedAt,
     });
@@ -35,6 +44,8 @@ class Meal {
       "price": price,
       "name": name,
       "description": description,
+      "description": img,
+      "favorites": userFavorites,
       "created_at": createdAt.toIso8601String(),
       "updated_at": updatedAt.toIso8601String()
     };

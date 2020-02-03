@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/models/meal.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_app/providers/meal.dart';
 import 'package:mobile_app/widgets/meal_list.dart';
@@ -24,7 +21,6 @@ class DailyMenuState extends State<DailyMenu> {
       return;
     }
     else {
-      final reviewTxt = reviewPin.text;
       reviewPin.text = "";
     }
   }
@@ -123,31 +119,7 @@ class DailyMenuState extends State<DailyMenu> {
   @override
   Widget build(BuildContext context) {
 
-//    final meals = Provider.of<MealProvider>(context).meals;
-
-    final meal_1 = new Meal();
-    meal_1.id = 1;
-    meal_1.name = 'Hamburger';
-    meal_1.description = 'Very tasty.';
-
-    final meal_2 = new Meal();
-    meal_2.id = 1;
-    meal_2.name = 'Salat';
-    meal_2.description = 'Much expensive.';
-
-    final meal_3 = new Meal();
-    meal_3.id = 1;
-    meal_3.name = 'Pizza';
-    meal_3.description = 'Such delicious.';
-
-    List<Meal> meals = List<Meal>(6);
-
-    meals[0] = meal_1;
-    meals[1] = meal_2;
-    meals[2] = meal_3;
-    meals[3] = meal_1;
-    meals[4] = meal_2;
-    meals[5] = meal_3;
+    final meals = Provider.of<MealProvider>(context).meals;
 
     // Get current day and date
     DateTime now = new DateTime.now();
