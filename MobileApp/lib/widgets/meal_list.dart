@@ -55,7 +55,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                             padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
                             child: Row(
                               children: <Widget>[
-                                Text("120 ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                Text("${meal.userFavorites} ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                 Icon(
                                   Icons.favorite,
                                   color: Colors.white,
@@ -77,7 +77,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                                     padding: const EdgeInsets.fromLTRB(12, 0, 0, 5),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12.0),
-                                        child: Image.asset("assets/images/hamburger.jpg", width: 150)),
+                                        child: Image.network("http://192.168.0.34:8000/${meal.img}", width: 150)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
@@ -109,7 +109,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                                         child: Text(meal.description, style: new TextStyle(color: Color(0xff959597), fontSize: 13.0, fontWeight: FontWeight.normal))
                                     ),
                                     Text(""),Text(""),
-                                    Text("115 HRK", style: new TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold, color: Colors.black)),
+                                    Text("${meal.price} HRK", style: new TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold, color: Colors.black)),
                                   ],
                                 ),
                               ),
