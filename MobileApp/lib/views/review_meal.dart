@@ -10,7 +10,7 @@ class ReviewMeal extends StatefulWidget{
 
 class _ReviewMealState extends State<ReviewMeal> {
 
-  GlobalKey<ScaffoldState> scaffold_state = new GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
   IconData icon = Icons.favorite_border;
   var rating = 0.0;
   bool visible = false;
@@ -22,8 +22,6 @@ class _ReviewMealState extends State<ReviewMeal> {
       return;
     }
     else {
-      final ratingStar = rating;
-      final reviewTxt = reviewText.text;
       visible = false;
       reviewText.text = "";
     }
@@ -51,7 +49,7 @@ class _ReviewMealState extends State<ReviewMeal> {
               ),
             )
           ]),
-      key: scaffold_state,
+      key: scaffoldState,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -284,7 +282,7 @@ class _ReviewMealState extends State<ReviewMeal> {
               content:
               icon == Icons.favorite ? Text("Hamburger was added to favorites.") :
               Text("Hamburger removed from favorites."));
-          scaffold_state.currentState.showSnackBar(snackBar);
+          scaffoldState.currentState.showSnackBar(snackBar);
         },
         child: new Icon(icon, size: 25.0),
         heroTag: null,

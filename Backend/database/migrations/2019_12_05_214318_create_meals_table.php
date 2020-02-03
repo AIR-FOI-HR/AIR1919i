@@ -18,6 +18,7 @@ class CreateMealsTable extends Migration
             $table->decimal('price', 8, 2)->unsigned();
             $table->string('name');
             $table->text('description');
+            $table->string('img')->nullable();
             $table->timestamps();
         });
     }

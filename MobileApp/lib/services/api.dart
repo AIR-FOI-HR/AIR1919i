@@ -29,7 +29,7 @@ class ApiService {
   */
   void validateResponseStatus(int status, int validStatus) {
     if (status == 401) throw new AuthException( "401", "Unauthorized" );
-    if (status != validStatus) throw new ApiException( status.toString(), "API Error" );
+    if (status != validStatus) throw new ApiException(status.toString(), "API Error");
   }
 
   // Returns a list of meals.

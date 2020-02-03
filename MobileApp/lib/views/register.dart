@@ -52,7 +52,7 @@ class RegisterFormState extends State<RegisterForm> {
   Future<void> submit() async {
     final form = _formKey.currentState;
     if (form.validate()) {
-      response = await Provider.of<AuthProvider>(context).register(name, email, password, passwordConfirm);
+      response = await Provider.of<AuthProvider>(context, listen: false).register(name, email, password, passwordConfirm);
       if (response['success']) Navigator.pop(context);
       else setState(() { message = response['message']; });
     }
