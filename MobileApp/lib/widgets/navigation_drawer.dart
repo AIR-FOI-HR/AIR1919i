@@ -103,7 +103,7 @@ class NavigationDrawer extends StatelessWidget {
                 title: Text('Logout', style: TextStyle(color: Colors.grey)),
                 onTap: () {
                   Navigator.pop(context);
-                  Provider.of<AuthProvider>(context).logOut();
+                  Provider.of<AuthProvider>(context, listen: false).logOut();
                   Navigator.of(context).popUntil(ModalRoute.withName('/')); // TODO => Fix animation
                 },
               ),

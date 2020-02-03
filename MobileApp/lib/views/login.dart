@@ -48,7 +48,7 @@ class LogInFormState extends State<LogInForm> {
 
   Future<void> submit() async {
     final form = _formKey.currentState;
-    if (form.validate())  await Provider.of<AuthProvider>(context).login(email, password);
+    if (form.validate())  await Provider.of<AuthProvider>(context, listen: false).login(email, password);
   }
 
   @override

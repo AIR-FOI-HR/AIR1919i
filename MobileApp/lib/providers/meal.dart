@@ -26,7 +26,6 @@ class MealProvider with ChangeNotifier {
   MealProvider(AuthProvider authProvider) {
     this.apiService = ApiService(authProvider);
     this.authProvider = authProvider;
-
     init();
   }
 
