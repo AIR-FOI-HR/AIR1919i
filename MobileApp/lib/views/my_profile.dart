@@ -50,7 +50,6 @@ class MyProfile extends StatelessWidget {
       body: SingleChildScrollView(
         child: FutureBuilder(
             future: getMyProfileData(),
-            initialData: '0',
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return Column(
@@ -141,6 +140,10 @@ class MyProfile extends StatelessWidget {
                           itemCount: snapshot.data['favorite_meals'].length,
                           itemBuilder: (context, index) {
                             final meal = snapshot.data['favorite_meals'][index];
+                            List<Widget> icons = [];
+                            var i = 0;
+                            for (i; i < meal['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
+                            for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.4,
                               child: Card(
@@ -195,11 +198,7 @@ class MyProfile extends StatelessWidget {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.star, color: Color(0xffFFB200),size: 15.0),
-                                              Icon(Icons.star, color: Color(0xffFFB200),size: 15.0),
-                                              Icon(Icons.star, color: Color(0xffFFB200),size: 15.0),
-                                              Icon(Icons.star, color: Color(0xffFFB200),size: 15.0),
-                                              Icon(Icons.star, color: Colors.grey,size: 15.0),
+                                              for(var item in icons) item
                                             ],
                                           ),
                                         ),

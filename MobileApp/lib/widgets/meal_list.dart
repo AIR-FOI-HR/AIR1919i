@@ -52,7 +52,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                             color: Color(0xffFD0034),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+                            padding: const EdgeInsets.fromLTRB(25, 2, 2, 2),
                             child: Row(
                               children: <Widget>[
                                 Text("${meal.userFavorites} ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -82,7 +82,6 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
                                     child: new Row(
-                                      //mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
                                         Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),

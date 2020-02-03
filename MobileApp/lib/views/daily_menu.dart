@@ -17,12 +17,8 @@ class DailyMenuState extends State<DailyMenu> {
   final _formKey = GlobalKey<FormState>();
 
   void submitDataPin(){
-    if(reviewPin.text.isEmpty){
-      return;
-    }
-    else {
-      reviewPin.text = "";
-    }
+    if (reviewPin.text.isEmpty) return;
+    else reviewPin.text = "";
   }
 
   void scanQRCode() async {
@@ -45,7 +41,6 @@ class DailyMenuState extends State<DailyMenu> {
                   keyboardType: TextInputType.text,
                   controller: reviewPin,
                   maxLength: 8,
-
                   decoration: new InputDecoration(
                     hintText: "Enter the PIN given on your invoice",
                     focusedBorder: UnderlineInputBorder(
@@ -53,12 +48,8 @@ class DailyMenuState extends State<DailyMenu> {
                     ),
                   ),
                   validator: (value) {
-                    if(value.isEmpty) {
-                      return "Please enter the PIN";
-                    }
-                    if(value.length !=8) {
-                      return "PIN must be at least 8 characters in length";
-                    }
+                    if (value.isEmpty) return "Please enter the PIN";
+                    if (value.length != 8) return "PIN must be exactly 8 characters in length";
                     return null;
                   }
               )
