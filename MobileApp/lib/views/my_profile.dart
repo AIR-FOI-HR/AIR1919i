@@ -198,7 +198,7 @@ class MyProfile extends StatelessWidget {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              for(var item in icons) item
+                                              for (var item in icons) item
                                             ],
                                           ),
                                         ),

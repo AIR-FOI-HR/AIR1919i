@@ -11,7 +11,7 @@ class Meal {
     String description;
     String img;
     String userFavorites;
-    String stars;
+    int stars;
     DateTime createdAt;
     DateTime updatedAt;
 
