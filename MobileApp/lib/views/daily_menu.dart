@@ -17,6 +17,17 @@ class DailyMenu extends StatefulWidget {
 
 class DailyMenuState extends State<DailyMenu> {
   final reviewPin = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  void submitDataPin(){
+    if(reviewPin.text.isEmpty){
+      return;
+    }
+    else {
+      final reviewTxt = reviewPin.text;
+      reviewPin.text = "";
+    }
+  }
 
   void scanQRCode() async {
     Navigator.of(context).pop();
@@ -33,15 +44,27 @@ class DailyMenuState extends State<DailyMenu> {
         return AlertDialog(
           title: new Text("Your PIN"),
           content: Form(
+              key: _formKey,
               child: TextFormField(
                   keyboardType: TextInputType.text,
                   controller: reviewPin,
+                  maxLength: 8,
+
                   decoration: new InputDecoration(
                     hintText: "Enter the PIN given on your invoice",
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffFFB200)),
                     ),
                   ),
+                  validator: (value) {
+                    if(value.isEmpty) {
+                      return "Please enter the PIN";
+                    }
+                    if(value.length !=8) {
+                      return "PIN must be at least 8 characters in length";
+                    }
+                    return null;
+                  }
               )
           ),
             actions: <Widget>[
@@ -49,7 +72,10 @@ class DailyMenuState extends State<DailyMenu> {
                 color: Color(0xffFFB200),
                 child: new Text("Post",style: TextStyle(color: Colors.white),),
                 onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    submitDataPin();
                     Navigator.of(context).pop();
+                  }
                 },
               ),
               new FlatButton(
