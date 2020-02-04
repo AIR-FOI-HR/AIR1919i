@@ -1,14 +1,23 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/utils/exceptions.dart';
 import 'package:mobile_app/views/list_reviews.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:http/http.dart' as http;
 
-class ReviewMeal extends StatefulWidget{
+class ReviewMeal extends StatefulWidget {
+  final mealId;
+  ReviewMeal({Key key, @required this.mealId}) : super(key: key);
+
   @override
-  _ReviewMealState createState() => _ReviewMealState();
+  _ReviewMealState createState() => _ReviewMealState(mealId: mealId);
 }
 
 class _ReviewMealState extends State<ReviewMeal> {
+
+  final mealId;
+  _ReviewMealState({Key key, @required this.mealId});
 
   GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
   IconData icon = Icons.favorite_border;
@@ -18,9 +27,7 @@ class _ReviewMealState extends State<ReviewMeal> {
   final _formKey = GlobalKey<FormState>();
 
   void submitDataReview(){
-    if(reviewText.text.isEmpty){
-      return;
-    }
+    if (reviewText.text.isEmpty) return;
     else {
       visible = false;
       reviewText.text = "";
@@ -35,259 +42,307 @@ class _ReviewMealState extends State<ReviewMeal> {
       return sharedPrefs.getString('img');
     }
 
-    return Scaffold(
-      appBar: AppBar(
-          title: Text('Meal reviews'),
-          backgroundColor: Colors.black87,
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                "assets/images/Logo.png",
-                height: 45,
-                width: 55,
-              ),
-            )
-          ]),
-      key: scaffoldState,
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage("assets/images/hamburger.jpg"),
-                  height: MediaQuery.of(context).size.width * 0.35,
-                  width: MediaQuery.of(context).size.width,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.width * 0.35,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        const Color(0x00000000),
-                        const Color(0x00000000),
-                        const Color(0xCC000000),
-                        const Color(0xCC000000),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                    bottom: 44.0,
-                    left: 8.0,
-                    child: Text("Hamburger",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18))),
-                Positioned(
-                    bottom: 28.0,
-                    left: 8.0,
-                    child: Text("Sadrazaj",style: TextStyle(color: Colors.white))),
-                Positioned(
-                  bottom: 8.0,
-                  left: 8.0,
-                  child: Row(
-                    children: [
-                      Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                      Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                      Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                      Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                      Icon(Icons.star_border, color: Color(0xffFFB200),size: 16.0),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  bottom: 8.0,
-                  right: 8.0,
-                  child: Row(
-                    children: <Widget>[
-                      Text("87 ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 13)),
-                      Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                        size: 16.0,
+    // Returns meal data TODO => Send token from storage and authenticate.
+    Future <Map<String, dynamic>> getMealData() async {
+      final url = "http://192.168.0.34:8000/api/meals/$mealId";
+      final response = await http.get(url);
+      if (response.statusCode != 200) throw new ApiException(response.statusCode.toString(), "API Error" );
+      Map<String, dynamic> apiResponse = json.decode(response.body);
+      return apiResponse;
+    }
+
+    return FutureBuilder(
+        future: getMealData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            List<Widget> icons = [];
+            var i = 0;
+            for (i; i < snapshot.data['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
+            for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+            return Scaffold(
+              appBar: AppBar(
+                  title: Text("${snapshot.data["name"]}"),
+                  backgroundColor: Colors.black87,
+                  actions: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        "assets/images/Logo.png",
+                        height: 45,
+                        width: 55,
                       ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 25, 10, 10),
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(80.0),
-                  child: FutureBuilder<String>(
-                      future: _getUserImage(),
-                      initialData: 'http://192.168.0.43:8000/img/users/DefaultUserImage.png',
-                      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                        return snapshot.hasData ?
-                        Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/users/DefaultUserImage.png', width: 100) :
-                        CircularProgressIndicator();
-                      }
-                  ),
-                ),
-              ),
-            ),
-            Center(child: Text("Rate and review", style: TextStyle(fontWeight: FontWeight.bold))),
-            SmoothStarRating(
-              color: Color(0xffFFB200),
-              borderColor: Color(0xffFFB200),
-              rating: rating,
-              size: 25,
-              starCount: 5,
-              onRatingChanged: (value) {
-                setState(() {
-                  rating = value;
-                  visible = true;
-                });
-              },
-            ),
-        Visibility(
-            visible: visible,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0,0,0,7),
-                    child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      controller: reviewText,
-                      decoration: new InputDecoration(
-                          hintText: "What did you think about this meal?",
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffFFB200)),
-                          ),
-                        ),
-                      validator: (value) {
-                        if(value.isEmpty) {
-                          return "Please enter some text";
-                        }
-                        return null;
-                      }
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 25,
-                    child: RaisedButton(
-                        color: Color(0xffFFB200),
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                              submitDataReview();
-                              setState(() {
-                                visible = false;
-                                rating = 0.0;
-                              });
-                          }
-                        },
-                        child: Text('Post', style: TextStyle(fontSize: 14, color: Colors.white))),
-                  ),
-                ],
-              )
-            ),
-          )
-        ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 2, 2, 2),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Recent Reviews",style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),)
-                        ],
-                      )),
-                  Expanded(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("55 total",style: TextStyle(color: Colors.grey, fontSize: 14),)
-                        ],
-                      )),
-                ],
-              ),
-            ),
-            Container(
-              height: visible==true ? 160 : 180,
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (context, index){
-                  return ListTile(
-                      leading: CircleAvatar(
-                          radius: 25,
-                          backgroundImage: ExactAssetImage("assets/images/butterflywings55.jpg")
-                      ),
-                    title: Text("Ime Prezime"),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Komentar Komentar Komentar Komentar Komentar Komentar Komentar Komentar"),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
-                          child: Row(
-                            children: [
-                              Icon(Icons.star, color: Colors.orangeAccent,size: 12.0),
-                              Icon(Icons.star, color: Colors.orangeAccent,size: 12.0),
-                              Icon(Icons.star, color: Colors.orangeAccent,size: 12.0),
-                              Icon(Icons.star, color: Colors.orangeAccent,size: 12.0),
-                              Icon(Icons.star_border, color: Colors.orangeAccent,size: 12.0),
-                            ],
-                          ),
-                        ),
-                        new Divider(color: Colors.black54)
-                      ],
                     )
-                  );
-                }
-              )
-            ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: 38,
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RaisedButton(
-                color: Color(0xffFFB200),
+                  ]),
+              key: scaffoldState,
+              body: SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            height: MediaQuery.of(context).size.width * 0.35,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(image: new DecorationImage(image: new NetworkImage("http://192.168.0.34:8000/${snapshot.data["img"]}"), fit: BoxFit.cover)
+                            ),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.width * 0.35,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  const Color(0x00000000),
+                                  const Color(0x00000000),
+                                  const Color(0xCC000000),
+                                  const Color(0xCC000000),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                              bottom: 44.0,
+                              left: 8.0,
+                              child: Text("${snapshot.data["name"]}",
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18))),
+                          Positioned(
+                              bottom: 28.0,
+                              left: 8.0,
+                              child: Text("${snapshot.data["description"]}",style: TextStyle(color: Colors.white))),
+                          Positioned(
+                            bottom: 8.0,
+                            left: 8.0,
+                            child: Row(
+                              children: [
+                                for (var item in icons) item
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 8.0,
+                            right: 8.0,
+                            child: Row(
+                              children: <Widget>[
+                                Text("${snapshot.data["favorites_count"]} ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 16)),
+                                Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 25, 10, 10),
+                        child: Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(80.0),
+                            child: FutureBuilder<String>(
+                                future: _getUserImage(),
+                                initialData: 'http://192.168.0.43:8000/img/users/DefaultUserImage.png',
+                                builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                  return snapshot.hasData ?
+                                  Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/users/DefaultUserImage.png', width: 100) :
+                                  CircularProgressIndicator();
+                                }
+                            ),
+                          ),
+                        ),
+                      ),
+                      Center(child: Text("Rate and review", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                      Padding(
+                        padding: EdgeInsets.only(top: 15),
+                        child:     SmoothStarRating(
+                          color: Color(0xffFFB200),
+                          borderColor: Color(0xffFFB200),
+                          rating: rating,
+                          size: 35,
+                          starCount: 5,
+                          spacing: 10,
+                          onRatingChanged: (value) {
+                            setState(() {
+                              rating = value;
+                              visible = true;
+                            });
+                          },
+                        ),
+                      ),
+                      Visibility(
+                          visible: visible,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(25, 25, 25, 15),
+                                      child: TextFormField(
+                                          keyboardType: TextInputType.text,
+                                          controller: reviewText,
+                                          decoration: new InputDecoration(
+                                            hintText: "What did you think about this meal?",
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Color(0xffFFB200)),
+                                            ),
+                                          ),
+                                          validator: (value) {
+                                            if(value.isEmpty) {
+                                              return "Please leave a comment";
+                                            }
+                                            return null;
+                                          }
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 25),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 40,
+                                        child: RaisedButton(
+                                            color: Color(0xffFFB200),
+                                            onPressed: () {
+                                              if (_formKey.currentState.validate()) {
+                                                submitDataReview();
+                                                setState(() {
+                                                  visible = false;
+                                                  rating = 0.0;
+                                                });
+                                              }
+                                            },
+                                            child: Text('Post', style: TextStyle(fontSize: 14, color: Colors.white))),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ),
+                          )
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 2, 2, 2),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                                flex: 1,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                        padding: EdgeInsets.only(left: 17),
+                                        child: Text("Recent Reviews",style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold))
+                                    )
+                                  ],
+                                )
+                            ),
+                            Expanded(
+                                flex: 1,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Padding (
+                                        padding: EdgeInsets.only(right: 17),
+                                        child: Text("${snapshot.data["ratings_count"]} total",style: TextStyle(color: Colors.grey, fontSize: 16))
+                                    )
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 25),
+                        child: Container(
+                            child: ListView.builder(
+                                physics: ClampingScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: snapshot.data['ratings'].length,
+                                itemBuilder: (context, index) {
+                                  List<Widget> icons = [];
+                                  var i = 0;
+                                  for (i; i < snapshot.data['ratings'][index]['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
+                                  for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+                                  return ListTile(
+                                      leading: SizedBox(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(80.0),
+                                            child: Image.network("http://192.168.0.34:8000/${snapshot.data['ratings'][index]['user']['img']}", width: 50)
+                                          ),
+                                      ),
+                                      title: Padding(
+                                        padding: EdgeInsets.only(top: 10),
+                                        child: Text("${snapshot.data['ratings'][index]['user']['name']}", style: TextStyle(fontWeight: FontWeight.bold)),
+                                      ),
+                                      subtitle: Padding(
+                                        padding: EdgeInsets.only(top: 5),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text("${snapshot.data['ratings'][index]['comment']}"),
+                                            Padding(
+                                              padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
+                                              child: Row(
+                                                children: [
+                                                  for (var item in icons) item
+                                                ],
+                                              ),
+                                            ),
+                                            new Divider(color: Colors.black54)
+                                          ],
+                                        )
+                                      )
+                                  );
+                                }
+                            )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(15),
+                        child:  SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: snapshot.data['ratings_counter'] > 3 ? 50 : 0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: snapshot.data['ratings_counter'] > 3 ? RaisedButton(
+                                color: Color(0xffFFB200),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ListReviews(mealId: snapshot.data['id'])
+                                      ));
+                                },
+                                child: Text('Load More Reviews', style: TextStyle(fontSize: 15, color: Colors.white))) : Text("")
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              floatingActionButton: new FloatingActionButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => ListReviews()
-                  ));
+                  changeFloatingIcon();
+                  final snackBar = SnackBar(
+                      elevation: 6.0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.green,
+                      content:
+                      icon == Icons.favorite ? Text("Hamburger was added to favorites.") :
+                      Text("Hamburger removed from favorites."));
+                  scaffoldState.currentState.showSnackBar(snackBar);
                 },
-                child: Text('Load More Reviews', style: TextStyle(fontSize: 13, color: Colors.white))),
-          ),
-        ),
-          ],
-        ),
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: () {
-          changeFloatingIcon();
-          final snackBar = SnackBar(
-              elevation: 6.0,
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Colors.green,
-              content:
-              icon == Icons.favorite ? Text("Hamburger was added to favorites.") :
-              Text("Hamburger removed from favorites."));
-          scaffoldState.currentState.showSnackBar(snackBar);
-        },
-        child: new Icon(icon, size: 25.0),
-        heroTag: null,
-        backgroundColor: Color(0xffFD0034),
-      ),
+                child: new Icon(icon, size: 25.0),
+                heroTag: null,
+                backgroundColor: Color(0xffFD0034),
+              ),
+            );
+          } else return CircularProgressIndicator();
+        }
     );
   }
 
