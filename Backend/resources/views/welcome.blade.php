@@ -21,10 +21,6 @@
                 margin: 0;
             }
 
-            .full-height {
-                height: 100vh;
-            }
-
             .flex-center {
                 align-items: center;
                 display: flex;
@@ -271,7 +267,7 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="flex-center position-ref">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -312,12 +308,51 @@
                         </div>
                     </div>
                 </form>
-                @if(\App\QrCode::first() && \App\QrCode::first()->img)
-                    <span>Testing QR Code.</span>
-                    <br>
-                    <img height="200px" src="{{ \App\QrCode::first()->img }}" alt="Testing QRCode">
-                @endif
             </div>
+        </div>
+        <div style="text-align: center;">
+            <h1>Testing QRcodes</h1>
+        </div>
+        <div class="flex-center" style="margin-bottom: 100px;">
+            @if($first_qr_code = \App\QrCode::find(1))
+                <div style="display: flex; justify-content: center; width: 33%; text-align: center">
+                    <div style="display: flex; justify-content: center;">
+                        <div style="width: auto; text-align: center">
+                            <span>QRcode scanned by User</span>
+                            <br>
+                            <span>Code: <b>{{ $first_qr_code->code }}</b></span>
+                            <br>
+                            <img height="125px" src="{{ $first_qr_code->img }}" alt="First Testing QRCode">
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if($second_qr_code = \App\QrCode::find(2))
+                <div style="display: flex; justify-content: center; width: 33%; text-align: center">
+                    <div style="display: flex; justify-content: center;">
+                        <div style="width: 33%; text-align: center">
+                            <span>QRcode not scanned by User but scanned maximum number of times.</span>
+                            <br>
+                            <span>Code: <b>{{ $second_qr_code->code }}</b></span>
+                            <br>
+                            <img height="125px" src="{{ $second_qr_code->img }}" alt="Second Testing QRCode">
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if($third_qr_code = \App\QrCode::find(3))
+                <div style="display: flex; justify-content: center; width: 33%; text-align: center">
+                    <div style="display: flex; justify-content: center;">
+                        <div style="width: 33%; text-align: center">
+                            <span>QRcode not scanned maximum number of times and not scanned by User.</span>
+                            <br>
+                            <span>Code: <b>{{ $third_qr_code->code }}</b></span>
+                            <br>
+                            <img height="125px" src="{{ $third_qr_code->img }}" alt="Third Testing QRCode">
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </body>
 </html>

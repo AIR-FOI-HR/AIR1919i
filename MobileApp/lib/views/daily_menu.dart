@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:mobile_app/widgets/meal_list.dart';
 import 'package:mobile_app/widgets/navigation_drawer.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class DailyMenu extends StatefulWidget {
   @override
@@ -13,20 +15,15 @@ class DailyMenu extends StatefulWidget {
 }
 
 class DailyMenuState extends State<DailyMenu> {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final reviewPin = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  void submitDataPin(){
-    if (reviewPin.text.isEmpty) return;
-    else reviewPin.text = "";
-  }
-
   void scanQRCode() async {
     Navigator.of(context).pop();
     String cameraScanResult = await scanner.scan();
-    print('Printing QR Code Scan Result');
-    print(cameraScanResult);
-    // TODO => Send (authenticated) API request to backend, validate the request and return the result.
+    if (cameraScanResult.isEmpty) return;
+    submitDataPin(cameraScanResult, qrScan: true);
   }
 
   void _showDialogPin(){
@@ -59,9 +56,22 @@ class DailyMenuState extends State<DailyMenu> {
                 color: Color(0xffFFB200),
                 child: new Text("Post",style: TextStyle(color: Colors.white),),
                 onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    submitDataPin();
+                  if (_formKey.currentState.validate() && reviewPin.text.isNotEmpty) {
                     Navigator.of(context).pop();
+                    Widget message = FutureBuilder<String>(
+                        future: submitDataPin(reviewPin.text, qrScan: false),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          return snapshot.hasData ?  Text("${snapshot.data}") : Text("Something went wrong");
+                        }
+                    );
+                    _scaffoldKey.currentState.showSnackBar(
+                        SnackBar(
+                            elevation: 6.0,
+                            duration:  const Duration(seconds: 2),
+                            behavior: SnackBarBehavior.fixed,
+                            backgroundColor: Colors.blue,
+                            content: message
+                      ));
                   }
                 },
               ),
@@ -107,6 +117,25 @@ class DailyMenuState extends State<DailyMenu> {
     );
   }
 
+  Future<String> submitDataPin(code, { qrScan: false}) async {
+      final url = "http://192.168.0.34:8000/api/scan-qr-code";
+      Map<String, String> body = { 'code' : code };
+      final response = await http.post(url, body: body);
+      reviewPin.text = "";
+      Map<String, dynamic> apiResponse = json.decode(response.body);
+      if (!qrScan) return response.statusCode == 200 ? apiResponse["message"] : "Something went wrong.";
+      else {
+        _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+                elevation: 6.0,
+                duration:  const Duration(seconds: 2),
+                behavior: SnackBarBehavior.fixed,
+                backgroundColor: Colors.blue,
+                content: Text("${apiResponse["message"]}")
+          ));
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -118,6 +147,7 @@ class DailyMenuState extends State<DailyMenu> {
     String formattedDate = DateFormat('dd.MM.yyyy.').format(now);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
           title: Text('Daily Menu'),
           backgroundColor: Colors.black87,
