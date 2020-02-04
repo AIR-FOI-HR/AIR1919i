@@ -352,7 +352,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                           size: 24.0,
                         ),
                         Text("  ${snapshot.data["name"]}", style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text(" was added to favorites."),
+                        Text(" added to favorites."),
                       ])
                       : Row(children: <Widget> [
                         Icon(
@@ -361,7 +361,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                           size: 24.0,
                         ),
                         Text("  ${snapshot.data["name"]}", style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text(" was removed from favorites."),
+                        Text(" removed from favorites."),
                       ]));
                       scaffoldState.currentState.showSnackBar(snackBar).closed.then((SnackBarClosedReason reason) { pressed = false; });
                 },
