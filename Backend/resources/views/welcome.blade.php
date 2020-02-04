@@ -317,8 +317,10 @@
             @if($first_qr_code = \App\QrCode::find(1))
                 <div style="display: flex; justify-content: center; width: 33%; text-align: center">
                     <div style="display: flex; justify-content: center;">
-                        <div style="width: 33%; text-align: center">
+                        <div style="width: auto; text-align: center">
                             <span>QRcode scanned by User</span>
+                            <br>
+                            <span>Code: <b>{{ $first_qr_code->code }}</b></span>
                             <br>
                             <img height="125px" src="{{ $first_qr_code->img }}" alt="First Testing QRCode">
                         </div>
@@ -331,6 +333,8 @@
                         <div style="width: 33%; text-align: center">
                             <span>QRcode not scanned by User but scanned maximum number of times.</span>
                             <br>
+                            <span>Code: <b>{{ $second_qr_code->code }}</b></span>
+                            <br>
                             <img height="125px" src="{{ $second_qr_code->img }}" alt="Second Testing QRCode">
                         </div>
                     </div>
@@ -341,6 +345,8 @@
                     <div style="display: flex; justify-content: center;">
                         <div style="width: 33%; text-align: center">
                             <span>QRcode not scanned maximum number of times and not scanned by User.</span>
+                            <br>
+                            <span>Code: <b>{{ $third_qr_code->code }}</b></span>
                             <br>
                             <img height="125px" src="{{ $third_qr_code->img }}" alt="Third Testing QRCode">
                         </div>
