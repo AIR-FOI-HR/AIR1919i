@@ -33,6 +33,10 @@ Widget mealList(BuildContext context, List<Meal> meals) {
         itemCount: meals.length,
         itemBuilder: (BuildContext context, int index) {
           final meal = meals[index];
+          List<Widget> icons = [];
+          var i = 0;
+          for (i; i < meal.stars; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
+          for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
           return FlatButton(
             child: Padding(
               padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -52,7 +56,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                             color: Color(0xffFD0034),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+                            padding: const EdgeInsets.fromLTRB(25, 2, 2, 2),
                             child: Row(
                               children: <Widget>[
                                 Text("${meal.userFavorites} ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -82,13 +86,8 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
                                     child: new Row(
-                                      //mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                                        Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                                        Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                                        Icon(Icons.star, color: Color(0xffFFB200),size: 16.0),
-                                        Icon(Icons.star_border, color: Color(0xffFFB200),size: 16.0),
+                                        for (var item in icons) item
                                       ],
                                     ),
                                   ),
@@ -123,7 +122,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
           onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ReviewMeal())
+                MaterialPageRoute(builder: (context) => ReviewMeal(mealId: meal.id))
               );
           }
           );

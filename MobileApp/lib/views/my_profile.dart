@@ -6,7 +6,15 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class MyProfile extends StatelessWidget {
+class MyProfile extends StatefulWidget {
+  @override
+  _MyProfileState createState() => _MyProfileState();
+}
+
+class _MyProfileState extends State<MyProfile> {
+
+  bool pressed = false;
+  String switchValue = 'no';
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +25,7 @@ class MyProfile extends StatelessWidget {
     Future <Map<String, dynamic>> getMyProfileData() async {
       final url = "http://192.168.0.34:8000/api/my-profile";
       final response = await http.get(url);
-      if (response.statusCode != 200) throw new ApiException(response.statusCode.toString(), "API Error" );
+      if (response.statusCode != 200) throw new ApiException(response.statusCode.toString(), "API Error");
       Map<String, dynamic> apiResponse = json.decode(response.body);
       return apiResponse;
     }
@@ -32,6 +40,19 @@ class MyProfile extends StatelessWidget {
       return sharedPrefs.getString('name');
     }
 
+    Future<bool> addToFavorites(mealId) async {
+      final url = "http://192.168.0.34:8000/api/meals/$mealId?toggle_favorite=1";
+      Map<String, String> body = { 'meal_id': mealId.toString() };
+      final response = await http.put(url, body: body);
+      return response.statusCode == 200 ? true : false;
+    }
+
+    Future<bool> subscribeToNotifications(value) async {
+      final url = "http://192.168.0.34:8000/api/subscribe-to-notifications";
+      Map<String, String> body = { 'subscribed': value.toString() };
+      final response = await http.post(url, body: body);
+      return response.statusCode == 200 ? true : false;
+    }
     return Scaffold(
       appBar: AppBar(
           title: Text('My Profile'),
@@ -50,9 +71,9 @@ class MyProfile extends StatelessWidget {
       body: SingleChildScrollView(
         child: FutureBuilder(
             future: getMyProfileData(),
-            initialData: '0',
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
+                switchValue = snapshot.data['subscribed_to_notifications'];
                 return Column(
                   children: <Widget>[
                     Padding(
@@ -115,7 +136,7 @@ class MyProfile extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text("Favorite Meals",style: TextStyle(color: Colors.grey, fontSize: 14),)
+                                  Text("Favorite Meals",style: TextStyle(fontSize: 14),)
                                 ],
                               )),
                           Expanded(
@@ -123,7 +144,7 @@ class MyProfile extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text("Reviews Left",style: TextStyle(color: Colors.grey, fontSize: 14),)
+                                  Text("Reviews Left",style: TextStyle(fontSize: 14),)
                                 ],
                               )),
                         ],
@@ -135,12 +156,16 @@ class MyProfile extends StatelessWidget {
                     ),),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                      height: MediaQuery.of(context).size.height * 0.28,
-                      child: ListView.builder(
+                      height: snapshot.data['favorite_meals'].length > 0 ? 200 : 82,
+                      child: snapshot.data['favorite_meals'].length > 0 ? ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data['favorite_meals'].length,
                           itemBuilder: (context, index) {
                             final meal = snapshot.data['favorite_meals'][index];
+                            List<Widget> icons = [];
+                            var i = 0;
+                            for (i; i < meal['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
+                            for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.4,
                               child: Card(
@@ -169,18 +194,45 @@ class MyProfile extends StatelessWidget {
                                         ),
                                         Positioned(
                                           top: 67,
-                                          left: 109,
+                                          right: 0,
                                           child: IconButton(
-                                            icon: Icon(Icons.favorite, size: 15),
+                                            icon: Icon((meal['is_favorite'] ? Icons.favorite : Icons.favorite_border), size: 15),
                                             color: Colors.white,
                                             onPressed: () {
+                                              if (pressed) return;
+                                              pressed = true;
+                                              addToFavorites(meal['id']);
+                                              meal['is_favorite'] = meal['is_favorite'] ? false : true;
                                               final snackBar = SnackBar(
                                                   elevation: 6.0,
-                                                  behavior: SnackBarBehavior.floating,
+                                                  duration:  const Duration(seconds: 2),
+                                                  behavior: SnackBarBehavior.fixed,
                                                   backgroundColor: Colors.green,
-                                                  content:
-                                                  Text("Hamburger removed from favorites."));
-                                              scaffoldState.currentState.showSnackBar(snackBar);
+                                                  action: SnackBarAction(
+                                                      label: "Undo",
+                                                      textColor: Colors.white,
+                                                      onPressed: () => { addToFavorites(meal['id']) }
+                                                  ),
+                                                  content: meal['is_favorite'] ?
+                                                  Row(children: <Widget> [
+                                                    Icon(
+                                                      Icons.favorite,
+                                                      color: Colors.white,
+                                                      size: 24.0,
+                                                    ),
+                                                    Text("  ${meal["name"]}", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                    Text(" added to favorites."),
+                                                  ])
+                                                      : Row(children: <Widget> [
+                                                    Icon(
+                                                      Icons.favorite_border,
+                                                      color: Colors.white,
+                                                      size: 24.0,
+                                                    ),
+                                                    Text("  ${meal["name"]}", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                    Text(" removed from favorites."),
+                                                  ]));
+                                              scaffoldState.currentState.showSnackBar(snackBar).closed.then((SnackBarClosedReason reason) { pressed = false; updateState(); });
                                             },
                                           ),
                                         ),
@@ -190,16 +242,12 @@ class MyProfile extends StatelessWidget {
                                           child: Text("${meal['name']}", style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                                         ),
                                         Positioned(
-                                          bottom: 3,
+                                          top: 120,
                                           left: 17,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.star, color: Color(0xffFFB200),size: 15.0),
-                                              Icon(Icons.star, color: Color(0xffFFB200),size: 15.0),
-                                              Icon(Icons.star, color: Color(0xffFFB200),size: 15.0),
-                                              Icon(Icons.star, color: Color(0xffFFB200),size: 15.0),
-                                              Icon(Icons.star, color: Colors.grey,size: 15.0),
+                                              for (var item in icons) item
                                             ],
                                           ),
                                         ),
@@ -208,20 +256,38 @@ class MyProfile extends StatelessWidget {
                                 ),
                               ),
                             );
-                          }),
+                          }) : Text("You currently no favorite meals. Check out the daily or the weekly menu and find something you like.")
+                    ),
+                    Text("Subscribe", style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold
+                    ),),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(18,10,18, 0),
+                      child: Text("You can subscribe to notifications. If you have favorite meals and you subscribe you\'ll be notified on the day your favorite meal is on the daily menu exactly at 10 AM."),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Switch(
+                        value: switchValue == 'yes' ? true : false,
+                        activeColor: Color(0xffFFB200),
+                        onChanged: (value) {
+                          setState(() {
+                            subscribeToNotifications(switchValue);
+                          });
+                        },
+                      ),
                     ),
                     Text("Free Meal", style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold
                     ),),
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text("On the receipt there's a QR code which you are able to scan. "
-                          "For every QR code scanned you profress by 10%. After 10 meals your "
-                          "next meal is free of charge! You have ${snapshot.data['signatures_count']} signatures."),
+                      padding: const EdgeInsets.fromLTRB(18,10,18,10),
+                      child: Text("On the receipt there's a QR code which you are able to scan. For every QR code scanned you profress by 10%. After 10 meals your next meal is free of charge! You have ${snapshot.data['signatures_count']} signatures."),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(15.0),
+                      padding: EdgeInsets.all(15),
                       child: new LinearPercentIndicator(
                         width: 380.0,
                         lineHeight: 30.0,
@@ -240,5 +306,10 @@ class MyProfile extends StatelessWidget {
       ),
       drawer: NavigationDrawer(),
     );
+  }
+
+  void updateState() {
+    setState(() {
+    });
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
+import 'package:mobile_app/utils/exceptions.dart';
 import 'package:mobile_app/widgets/meal_list.dart';
 import 'package:mobile_app/widgets/navigation_drawer.dart';
 import 'package:intl/intl.dart';
@@ -12,26 +15,44 @@ class WeeklyMenu extends StatefulWidget {
 class WeeklyMenuState extends State<WeeklyMenu>{
 
   int _selectedIndexForTabBar = 1;
+  bool initialized = false;
 
-  void _onItemTappedForTabBar(int index) {
-    setState(() {
-      _selectedIndexForTabBar++;
-      _selectedIndexForTabBar =  _selectedIndexForTabBar  > 6 ?  0 : index + 1;
-    });
+  Future <List<Meal>> getMyProfileData(index) async {
+    initialized = true;
+    final url = "http://192.168.0.34:8000/api/meals?day=$index";
+    final response = await http.get(url);
+    if (response.statusCode != 200) throw new ApiException(response.statusCode.toString(), "API Error" );
+    Map<String, dynamic> apiResponse = json.decode(response.body);
+    List<dynamic> data = apiResponse['data'];
+    List<Meal> meals = mealFromJson(json.encode(data));
+    return meals;
   }
 
   @override
   Widget build(BuildContext context) {
 
-    // Get current day and date
     DateTime now = new DateTime.now();
-    String formattedDate = DateFormat('MM.dd.yyyy').format(now);
+    String formattedDay =  DateFormat('EEEE').format(now);
+
+    // Get current day and date
+    String returnFormattedDate({days = 0}) {
+      DateTime now = new DateTime.now().add(new Duration(days: days));
+      String formattedDate = DateFormat('dd.MM.yyyy.').format(now);
+      return formattedDate;
+    }
 
     final tabBar = new TabBar(
       labelColor: Colors.white,
       labelStyle: TextStyle(fontSize: 16),
       isScrollable: true,
-      onTap: _onItemTappedForTabBar,
+      onTap: (index) {
+        setState(() {
+          _selectedIndexForTabBar++;
+          _selectedIndexForTabBar = index + 1;
+        });
+        getMyProfileData(_selectedIndexForTabBar);
+        returnFormattedDate();
+      },
       unselectedLabelColor: Colors.grey,
       indicatorColor: Color(0xffFFB200),
       tabs: <Widget>[
@@ -59,30 +80,8 @@ class WeeklyMenuState extends State<WeeklyMenu>{
       ],
     );
 
-    // Testing data
-    final meal_1 = new Meal();
-    meal_1.id = 1;
-    meal_1.name = 'Hamburger';
-    meal_1.description = 'Very tasty.';
-
-    final meal_2 = new Meal();
-    meal_2.id = 1;
-    meal_2.name = 'Salat';
-    meal_2.description = 'Much expensive.';
-
-    final meal_3 = new Meal();
-    meal_3.id = 1;
-    meal_3.name = 'Pizza';
-    meal_3.description = 'Such delicious.';
-
-    List<Meal> meals = List<Meal>(3);
-
-    meals[0] = meal_1;
-    meals[1] = meal_2;
-    meals[2] = meal_3;
-
     return new DefaultTabController(
-        initialIndex: now.weekday - 1,
+        initialIndex: new DateTime.now().weekday - 1,
         length: 7,
         child: new Scaffold(
             appBar: new AppBar(
@@ -103,16 +102,21 @@ class WeeklyMenuState extends State<WeeklyMenu>{
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(32, 25, 10, 0),
-                    child: Text( _selectedIndexForTabBar == 1 ? "Monday" : _selectedIndexForTabBar == 2 ? "Tuesday" : _selectedIndexForTabBar == 3 ? "Wednesday" : _selectedIndexForTabBar == 4 ? "Thursday" : _selectedIndexForTabBar == 5 ? "Friday" : _selectedIndexForTabBar == 6 ? "Saturday" : "Sunday", style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold)),
+                    child: Text( _selectedIndexForTabBar == 1 && initialized ? "Monday" : _selectedIndexForTabBar == 2 ? "Tuesday" : _selectedIndexForTabBar == 3 ? "Wednesday" : _selectedIndexForTabBar == 4 ? "Thursday" : _selectedIndexForTabBar == 5 ? "Friday" : _selectedIndexForTabBar == 6 ? "Saturday" : _selectedIndexForTabBar == 7 ? "Sunday" : formattedDay, style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold)),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(32, 3, 10, 16),
-                    child: Text("$formattedDate", style: new TextStyle(
-                        fontSize: 18.0, fontWeight: FontWeight.normal)),
+                    child: Text("${returnFormattedDate(days: _selectedIndexForTabBar - 1)}", style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal)),
                   ),
                   Padding(
                       padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
-                      child: mealList(context, meals))
+                      child: FutureBuilder(
+                          future: getMyProfileData(initialized ? _selectedIndexForTabBar : new DateTime.now().weekday),
+                          builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              return snapshot.hasData ? mealList(context, snapshot.data) : CircularProgressIndicator();
+                          }
+                      ),
+                  )
                 ],
         ),
     ),
