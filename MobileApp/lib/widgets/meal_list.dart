@@ -122,7 +122,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
           onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ReviewMeal())
+                MaterialPageRoute(builder: (context) => ReviewMeal(mealId: meal.id))
               );
           }
           );
