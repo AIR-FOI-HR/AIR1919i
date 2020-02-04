@@ -12,7 +12,9 @@ Route::group([
 });
 
 Route::apiResource('meals', 'Api\MealApiController')->only(['index', 'show', 'update']);;
+Route::apiResource('load-more-reviews', 'Api\ReviewApiController')->only(['show']);;
 Route::post('scan-qr-code', 'Api\QrCodeApiController@index');
+Route::post('subscribe-to-notifications', 'Api\SubscriptionApiController@index');
 Route::get('my-profile', 'Api\MyProfileApiController@index');
 
 // Not Found
