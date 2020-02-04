@@ -21,17 +21,23 @@ class _ReviewMealState extends State<ReviewMeal> {
 
   GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
   IconData icon;
-  var rating = 0.0;
   bool visible = false;
   bool pressed = false;
-  final reviewText = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final reviewText = new TextEditingController();
+  var rating = 0.0;
 
-  void submitDataReview(){
-    if (reviewText.text.isEmpty) return;
+  Future<bool> submitDataReview(mealId) async {
+    if (reviewText.text.isEmpty) return false;
     else {
+      print("Printing sending");
+      final url = "http://192.168.0.34:8000/api/meals/$mealId?review=1";
+      Map<String, String> body = { 'comment' : reviewText.text, 'stars' : rating.toString() };
+      final response = await http.put(url, body: body);
+      print(response.statusCode);
       visible = false;
       reviewText.text = "";
+      return response.statusCode == 200 ? true : false;
     }
   }
 
@@ -43,7 +49,7 @@ class _ReviewMealState extends State<ReviewMeal> {
       return sharedPrefs.getString('img');
     }
 
-    // Returns meal data TODO => Send token from storage and authenticate.
+    // TODO => Send token from storage and authenticate.
     Future <Map<String, dynamic>> getMealData() async {
       final url = "http://192.168.0.34:8000/api/meals/$mealId";
       final response = await http.get(url);
@@ -52,6 +58,7 @@ class _ReviewMealState extends State<ReviewMeal> {
       return apiResponse;
     }
 
+    // TODO => Send token from storage and authenticate.
     Future<bool> addToFavorites(mealId) async {
       final url = "http://192.168.0.34:8000/api/meals/$mealId?toggle_favorite=1";
       Map<String, String> body = { 'meal_id': mealId.toString() };
@@ -66,8 +73,8 @@ class _ReviewMealState extends State<ReviewMeal> {
             icon = snapshot.data['is_favorite'] ? Icons.favorite : Icons.favorite_border;
             List<Widget> icons = [];
             var i = 0;
-            for (i; i < snapshot.data['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
-            for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+            while (i < snapshot.data['stars']) { i++; icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0)); }
+            while (i < 5) { i++; icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0)); }
             return Scaffold(
               appBar: AppBar(
                   title: Text("${snapshot.data["name"]}"),
@@ -199,12 +206,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                                               borderSide: BorderSide(color: Color(0xffFFB200)),
                                             ),
                                           ),
-                                          validator: (value) {
-                                            if(value.isEmpty) {
-                                              return "Please leave a comment";
-                                            }
-                                            return null;
-                                          }
+                                          validator: (value) { return value.isEmpty ? "Please leave a comment" : null; }
                                       ),
                                     ),
                                     Padding(
@@ -216,10 +218,11 @@ class _ReviewMealState extends State<ReviewMeal> {
                                             color: Color(0xffFFB200),
                                             onPressed: () {
                                               if (_formKey.currentState.validate()) {
-                                                submitDataReview();
+                                                submitDataReview(snapshot.data["id"]);
                                                 setState(() {
                                                   visible = false;
-                                                  rating = 0.0;
+                                                  rating = 0;
+                                                  getMealData();
                                                 });
                                               }
                                             },
@@ -273,8 +276,8 @@ class _ReviewMealState extends State<ReviewMeal> {
                                 itemBuilder: (context, index) {
                                   List<Widget> icons = [];
                                   var i = 0;
-                                  for (i; i < snapshot.data['reviews'][index]['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
-                                  for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+                                  while (i < snapshot.data['reviews'][index]['stars']) { i++; icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0)); }
+                                  while (i < 5) { i++; icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0)); }
                                   return ListTile(
                                       leading: SizedBox(
                                           child: ClipRRect(

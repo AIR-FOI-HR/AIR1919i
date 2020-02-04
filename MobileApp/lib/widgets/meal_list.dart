@@ -35,8 +35,8 @@ Widget mealList(BuildContext context, List<Meal> meals) {
           final meal = meals[index];
           List<Widget> icons = [];
           var i = 0;
-          for (i; i < meal.stars; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
-          for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+          while (i < meal.stars) { i++; icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0)); }
+          while (i < 5) { i++; icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0)); }
           return FlatButton(
             child: Padding(
               padding: EdgeInsets.fromLTRB(0, 5, 0, 5),

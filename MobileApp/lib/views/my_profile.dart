@@ -164,8 +164,8 @@ class _MyProfileState extends State<MyProfile> {
                             final meal = snapshot.data['favorite_meals'][index];
                             List<Widget> icons = [];
                             var i = 0;
-                            for (i; i < meal['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
-                            for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+                            while (i < meal['stars']) { i++; icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0)); }
+                            while (i < 5) { i++; icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0)); }
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.4,
                               child: Card(
