@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             UserFavoriteMealsTableSeeder::class,
             ReviewsTableSeeder::class,
-            QrCodesTableSeeder::class
+            QrCodesTableSeeder::class,
+            QrCodeUserTableSeeder::class
         ]);
     }
 }
