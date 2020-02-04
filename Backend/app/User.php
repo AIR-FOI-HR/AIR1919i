@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'img'
+        'name', 'email', 'password', 'img', 'signatures_count'
     ];
 
     /**
@@ -49,13 +49,13 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * User HAS MANY ratings
+     * User HAS MANY reviews
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ratings()
+    public function reviews()
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Review::class);
     }
 
     /**

@@ -26,13 +26,13 @@ class Meal extends Model
     }
 
     /**
-     * Meal HAS MANY ratings
+     * Meal HAS MANY reviews
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ratings()
+    public function reviews()
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Review::class);
     }
 
     /**

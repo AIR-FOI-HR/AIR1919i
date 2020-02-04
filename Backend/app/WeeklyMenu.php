@@ -6,11 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class WeeklyMenu extends Model
 {
-    // Day 1 is Monday
-    // ...
-    // Day 6 is Saturday
-    // Day 0 is Sunday
-
     /**
      * The attributes that are mass assignable.
      *

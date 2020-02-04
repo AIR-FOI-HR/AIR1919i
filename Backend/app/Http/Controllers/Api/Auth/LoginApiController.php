@@ -26,7 +26,7 @@ class LoginApiController extends APIController
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => [
-                'id' => $user->id,
+                'id' => (string)$user->id,
                 'name' => $user->name,
                 'img' => $user->img ? url('/') . '/' . $user->img : 'NO_IMAGE_SET'
             ]

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class MyProfileApiController extends ApiController
 {
@@ -22,16 +21,26 @@ class MyProfileApiController extends ApiController
         $user = User::findOrFail(1);
 
         // Get favorite meals
-        $favorite_meals = $user->favoriteMeals()->select('id', 'name', 'img')->get();
+        $favorite_meals = $user->favoriteMeals()
+            ->with('reviews')
+            ->select('id', 'name', 'img')
+            ->get()
+            ->transform(function ($el) {
+                $el->stars = round($el->reviews()->sum('stars') / $el->reviews()->count(), 0);
+                $el->is_favorite = true;
+                return $el;
+            });
 
         // Get number of reviews left
-        $number_of_reviews = $user->ratings->count();
+        $number_of_reviews = $user->reviews->count();
 
         return response()->json([
+            'id' => $user->id,
             'favorite_meals' => $favorite_meals,
             'number_of_reviews' => (string)$number_of_reviews,
             'number_of_favorite_meals' => $favorite_meals->count(),
-            'signatures_count' => $user->signatures_count
+            'signatures_count' => $user->signatures_count,
+            'subscribed_to_notifications' => $user->subscribed_to_notifications ? 'yes' : 'no'
         ], 200);
     }
 }

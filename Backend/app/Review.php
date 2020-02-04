@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rating extends Model
+class Review extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class Rating extends Model
     ];
 
     /**
-     * Rating BELONGS TO User
+     * Review BELONGS TO User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -26,7 +26,7 @@ class Rating extends Model
     }
 
     /**
-     * Rating BELONGS TO Meal
+     * Review BELONGS TO Meal
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
