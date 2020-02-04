@@ -15,8 +15,10 @@ class WeeklyMenu extends StatefulWidget {
 class WeeklyMenuState extends State<WeeklyMenu>{
 
   int _selectedIndexForTabBar = 1;
+  bool initialized = false;
 
   Future <List<Meal>> getMyProfileData(index) async {
+    initialized = true;
     final url = "http://192.168.0.34:8000/api/meals?day=$index";
     final response = await http.get(url);
     if (response.statusCode != 200) throw new ApiException(response.statusCode.toString(), "API Error" );
@@ -28,6 +30,9 @@ class WeeklyMenuState extends State<WeeklyMenu>{
 
   @override
   Widget build(BuildContext context) {
+
+    DateTime now = new DateTime.now();
+    String formattedDay =  DateFormat('EEEE').format(now);
 
     // Get current day and date
     String returnFormattedDate({days = 0}) {
@@ -97,7 +102,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(32, 25, 10, 0),
-                    child: Text( _selectedIndexForTabBar == 1 ? "Monday" : _selectedIndexForTabBar == 2 ? "Tuesday" : _selectedIndexForTabBar == 3 ? "Wednesday" : _selectedIndexForTabBar == 4 ? "Thursday" : _selectedIndexForTabBar == 5 ? "Friday" : _selectedIndexForTabBar == 6 ? "Saturday" : "Sunday", style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold)),
+                    child: Text( _selectedIndexForTabBar == 1 && initialized ? "Monday" : _selectedIndexForTabBar == 2 ? "Tuesday" : _selectedIndexForTabBar == 3 ? "Wednesday" : _selectedIndexForTabBar == 4 ? "Thursday" : _selectedIndexForTabBar == 5 ? "Friday" : _selectedIndexForTabBar == 6 ? "Saturday" : _selectedIndexForTabBar == 7 ? "Sunday" : formattedDay, style: new TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold)),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(32, 3, 10, 16),
@@ -106,7 +111,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
                   Padding(
                       padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
                       child: FutureBuilder(
-                          future: getMyProfileData(_selectedIndexForTabBar),
+                          future: getMyProfileData(initialized ? _selectedIndexForTabBar : new DateTime.now().weekday),
                           builder: (BuildContext context, AsyncSnapshot snapshot) {
                               return snapshot.hasData ? mealList(context, snapshot.data) : CircularProgressIndicator();
                           }
