@@ -20,9 +20,10 @@ class _ReviewMealState extends State<ReviewMeal> {
   _ReviewMealState({Key key, @required this.mealId});
 
   GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
-  IconData icon = Icons.favorite_border;
+  IconData icon;
   var rating = 0.0;
   bool visible = false;
+  bool pressed = false;
   final reviewText = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -51,10 +52,18 @@ class _ReviewMealState extends State<ReviewMeal> {
       return apiResponse;
     }
 
+    Future<bool> addToFavorites(mealId) async {
+      final url = "http://192.168.0.34:8000/api/meals/$mealId?toggle_favorite=1";
+      Map<String, String> body = { 'meal_id': mealId.toString() };
+      final response = await http.put(url, body: body);
+      return response.statusCode == 200 ? true : false;
+    }
+
     return FutureBuilder(
         future: getMealData(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
+            icon = snapshot.data['is_favorite'] ? Icons.favorite : Icons.favorite_border;
             List<Widget> icons = [];
             var i = 0;
             for (i; i < snapshot.data['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
@@ -108,8 +117,8 @@ class _ReviewMealState extends State<ReviewMeal> {
                               child: Text("${snapshot.data["name"]}",
                                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18))),
                           Positioned(
-                              bottom: 28.0,
-                              left: 8.0,
+                              bottom: 26.0,
+                              left: 9.0,
                               child: Text("${snapshot.data["description"]}",style: TextStyle(color: Colors.white))),
                           Positioned(
                             bottom: 8.0,
@@ -246,7 +255,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                                   children: <Widget>[
                                     Padding (
                                         padding: EdgeInsets.only(right: 17),
-                                        child: Text("${snapshot.data["ratings_count"]} total",style: TextStyle(color: Colors.grey, fontSize: 16))
+                                        child: Text("${snapshot.data["reviews_count"]} total",style: TextStyle(color: Colors.grey, fontSize: 16))
                                     )
                                   ],
                                 )),
@@ -260,29 +269,29 @@ class _ReviewMealState extends State<ReviewMeal> {
                                 physics: ClampingScrollPhysics(),
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
-                                itemCount: snapshot.data['ratings'].length,
+                                itemCount: snapshot.data['reviews'].length,
                                 itemBuilder: (context, index) {
                                   List<Widget> icons = [];
                                   var i = 0;
-                                  for (i; i < snapshot.data['ratings'][index]['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
+                                  for (i; i < snapshot.data['reviews'][index]['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
                                   for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
                                   return ListTile(
                                       leading: SizedBox(
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(80.0),
-                                            child: Image.network("http://192.168.0.34:8000/${snapshot.data['ratings'][index]['user']['img']}", width: 50)
+                                            child: Image.network("http://192.168.0.34:8000/${snapshot.data['reviews'][index]['user']['img']}", width: 50)
                                           ),
                                       ),
                                       title: Padding(
                                         padding: EdgeInsets.only(top: 10),
-                                        child: Text("${snapshot.data['ratings'][index]['user']['name']}", style: TextStyle(fontWeight: FontWeight.bold)),
+                                        child: Text("${snapshot.data['reviews'][index]['user']['name']}", style: TextStyle(fontWeight: FontWeight.bold)),
                                       ),
                                       subtitle: Padding(
                                         padding: EdgeInsets.only(top: 5),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text("${snapshot.data['ratings'][index]['comment']}"),
+                                            Text("${snapshot.data['reviews'][index]['comment']}"),
                                             Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                                               child: Row(
@@ -304,10 +313,10 @@ class _ReviewMealState extends State<ReviewMeal> {
                         padding: EdgeInsets.all(15),
                         child:  SizedBox(
                           width: MediaQuery.of(context).size.width,
-                          height: snapshot.data['ratings_counter'] > 3 ? 50 : 0,
+                          height: snapshot.data['reviews_counter'] > 3 ? 50 : 0,
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: snapshot.data['ratings_counter'] > 3 ? RaisedButton(
+                            child: snapshot.data['reviews_counter'] > 3 ? RaisedButton(
                                 color: Color(0xffFFB200),
                                 onPressed: () {
                                   Navigator.push(
@@ -326,15 +335,35 @@ class _ReviewMealState extends State<ReviewMeal> {
               ),
               floatingActionButton: new FloatingActionButton(
                 onPressed: () {
+                  if (pressed) return;
+                  pressed = true;
+                  addToFavorites(snapshot.data["id"]);
                   changeFloatingIcon();
                   final snackBar = SnackBar(
                       elevation: 6.0,
-                      behavior: SnackBarBehavior.floating,
+                      duration:  const Duration(seconds: 2),
+                      behavior: SnackBarBehavior.fixed,
                       backgroundColor: Colors.green,
-                      content:
-                      icon == Icons.favorite ? Text("Hamburger was added to favorites.") :
-                      Text("Hamburger removed from favorites."));
-                  scaffoldState.currentState.showSnackBar(snackBar);
+                      content: icon == Icons.favorite ?
+                      Row(children: <Widget> [
+                        Icon(
+                          Icons.favorite,
+                          color: Colors.white,
+                          size: 24.0,
+                        ),
+                        Text("  ${snapshot.data["name"]}", style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(" was added to favorites."),
+                      ])
+                      : Row(children: <Widget> [
+                        Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                          size: 24.0,
+                        ),
+                        Text("  ${snapshot.data["name"]}", style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(" was removed from favorites."),
+                      ]));
+                      scaffoldState.currentState.showSnackBar(snackBar).closed.then((SnackBarClosedReason reason) { pressed = false; });
                 },
                 child: new Icon(icon, size: 25.0),
                 heroTag: null,
@@ -346,10 +375,9 @@ class _ReviewMealState extends State<ReviewMeal> {
     );
   }
 
-  void changeFloatingIcon(){
+  void changeFloatingIcon() {
     setState(() {
       icon = icon == Icons.favorite_border ? Icons.favorite : Icons.favorite_border;
-    }
-    );
+    });
   }
 }
