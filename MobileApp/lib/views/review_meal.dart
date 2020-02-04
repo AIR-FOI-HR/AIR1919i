@@ -73,8 +73,8 @@ class _ReviewMealState extends State<ReviewMeal> {
             icon = snapshot.data['is_favorite'] ? Icons.favorite : Icons.favorite_border;
             List<Widget> icons = [];
             var i = 0;
-            for (i; i < snapshot.data['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
-            for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+            while (i < snapshot.data['stars']) { i++; icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0)); }
+            while (i < 5) { i++; icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0)); }
             return Scaffold(
               appBar: AppBar(
                   title: Text("${snapshot.data["name"]}"),
@@ -276,8 +276,8 @@ class _ReviewMealState extends State<ReviewMeal> {
                                 itemBuilder: (context, index) {
                                   List<Widget> icons = [];
                                   var i = 0;
-                                  for (i; i < snapshot.data['reviews'][index]['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
-                                  for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+                                  while (i < snapshot.data['reviews'][index]['stars']) { i++; icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0)); }
+                                  while (i < 5) { i++; icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0)); }
                                   return ListTile(
                                       leading: SizedBox(
                                           child: ClipRRect(

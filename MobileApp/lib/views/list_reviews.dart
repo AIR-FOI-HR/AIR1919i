@@ -57,8 +57,8 @@ class _ListReviewsState extends State<ListReviews> {
                       itemBuilder: (context, index) {
                         List<Widget> icons = [];
                         var i = 0;
-                        for (i; i < snapshot.data['reviews'][index]['stars']; i++) icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0));
-                        for (i; i < 5; i++) icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0));
+                        while (i < snapshot.data['reviews'][index]['stars']) { i++; icons.add(Icon(Icons.star, color: Color(0xffFFB200),size: 15.0)); }
+                        while (i < 5) { i++; icons.add(Icon(Icons.star, color: Colors.grey,size: 15.0)); }
                         return Padding(
                             padding: const EdgeInsets.only(bottom: 5),
                             child: ListTile(
