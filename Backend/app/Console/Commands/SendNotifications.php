@@ -46,13 +46,14 @@ class SendNotifications extends Command
 
         $tokens = User::select('id', 'firebase_token')
             ->whereNotNull('firebase_token')
+            ->where('subscribed_to_notifications', 1)
             ->whereHas('favoriteMeals')
             ->whereHas('favoriteMeals.weeklyMenu', function ($query) {
-                $query->where('day', Carbon::today()->dayOfWeek);
+                $query->where('day', Carbon::today()->dayOfWeek ?? 7);
             })
             ->get()
             ->pluck('firebase_token')
-            ->toArray();;
+            ->toArray();
 
         if (count($tokens) == 0) {
             Log::info('No users with firebase tokens found.');
