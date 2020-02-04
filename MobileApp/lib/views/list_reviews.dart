@@ -72,7 +72,10 @@ class _ListReviewsState extends State<ListReviews> {
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text("${snapshot.data['reviews'][index]['comment']}"),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2),
+                                      child: Text("${snapshot.data['reviews'][index]['comment']}"),
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                                       child: Row(
