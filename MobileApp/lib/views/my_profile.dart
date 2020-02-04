@@ -210,6 +210,7 @@ class _MyProfileState extends State<MyProfile> {
                                                   backgroundColor: Colors.green,
                                                   action: SnackBarAction(
                                                       label: "Undo",
+                                                      textColor: Colors.white,
                                                       onPressed: () => { addToFavorites(meal['id']) }
                                                   ),
                                                   content: meal['is_favorite'] ?
