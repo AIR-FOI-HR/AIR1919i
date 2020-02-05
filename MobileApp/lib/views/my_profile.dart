@@ -16,11 +16,11 @@ class _MyProfileState extends State<MyProfile> {
 
   bool pressed = false;
   String switchValue = 'no';
+  GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
 
-    GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
     Future <Map<String, dynamic>> getMyProfileData(token) async {
       final url = "http://192.168.0.34:8000/api/my-profile";
