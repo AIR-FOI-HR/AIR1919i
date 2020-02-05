@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
 import 'package:mobile_app/views/review_meal.dart';
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 Widget mealList(BuildContext context, List<Meal> meals) {
   return
@@ -81,7 +82,7 @@ Widget mealList(BuildContext context, List<Meal> meals) {
                                     padding: const EdgeInsets.fromLTRB(12, 0, 0, 5),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12.0),
-                                        child: Image.network("http://192.168.0.34:8000/${meal.img}", width: 150)),
+                                        child: Image.network("${globals.backendUrl}/${meal.img}", width: 150)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),

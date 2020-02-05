@@ -6,6 +6,7 @@ import 'package:mobile_app/widgets/navigation_drawer.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 class MyProfile extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _MyProfileState extends State<MyProfile> {
 
 
     Future <Map<String, dynamic>> getMyProfileData(token) async {
-      final url = "http://192.168.0.34:8000/api/my-profile";
+      final url = "${globals.backendUrl}/api/my-profile";
       final response = await http.get(
         url,
         headers: {
@@ -51,7 +52,7 @@ class _MyProfileState extends State<MyProfile> {
     }
 
     Future<bool> addToFavorites(mealId, token) async {
-      final url = "http://192.168.0.34:8000/api/meals/$mealId?toggle_favorite=1";
+      final url = "${globals.backendUrl}/api/meals/$mealId?toggle_favorite=1";
       Map<String, String> body = { 'meal_id': mealId.toString() };
       final response = await http.put(
         url,
@@ -64,7 +65,7 @@ class _MyProfileState extends State<MyProfile> {
     }
 
     Future<bool> subscribeToNotifications(value, token) async {
-      final url = "http://192.168.0.34:8000/api/subscribe-to-notifications";
+      final url = "${globals.backendUrl}/api/subscribe-to-notifications";
       Map<String, String> body = { 'subscribed': value.toString() };
       final response = await http.post(
           url,
@@ -111,10 +112,10 @@ class _MyProfileState extends State<MyProfile> {
                                   borderRadius: BorderRadius.circular(80.0),
                                   child: FutureBuilder<String>(
                                       future: _getUserImage(),
-                                      initialData: 'http://192.168.0.43:8000/img/users/DefaultUserImage.png',
+                                      initialData: '${globals.backendUrl}/img/users/DefaultUserImage.png',
                                       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                                         return snapshot.hasData ?
-                                        Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/users/DefaultUserImage.png', width: 100) :
+                                        Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : '${globals.backendUrl}/img/users/DefaultUserImage.png', width: 100) :
                                         Padding(
                                           padding: const EdgeInsets.only(top: 24),
                                           child: Row(
@@ -232,7 +233,7 @@ class _MyProfileState extends State<MyProfile> {
                                                     left: 18,
                                                     child: ClipRRect(
                                                         borderRadius: BorderRadius.circular(6.0),
-                                                        child: Image.network("http://192.168.0.34:8000/${meal['img']}", width: 120)),
+                                                        child: Image.network("${globals.backendUrl}/${meal['img']}", width: 120)),
                                                   ),
                                                   Positioned(
                                                     right: 10,

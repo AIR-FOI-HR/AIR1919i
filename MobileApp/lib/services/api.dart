@@ -6,6 +6,7 @@ import 'package:mobile_app/providers/auth.dart';
 import 'package:mobile_app/utils/exceptions.dart';
 import 'package:mobile_app/utils/meal_response.dart';
 import 'package:mobile_app/models/meal.dart';
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 class ApiService {
 
@@ -20,7 +21,7 @@ class ApiService {
     this.token = authProvider.token;
   }
 
-  final String api = 'http://192.168.0.34:8000/api';
+  final String api = '${globals.backendUrl}/api';
 
   /*
   * Validates the response code from an API call.

@@ -11,6 +11,7 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 class DailyMenu extends StatefulWidget {
   @override
@@ -144,7 +145,7 @@ class DailyMenuState extends State<DailyMenu> with Signature {
   Widget build(BuildContext context) {
 
     Future <List<Meal>> getTodaysMeals(token) async {
-      final url = "http://192.168.0.34:8000/api/meals?day=${new DateTime.now().weekday}";
+      final url = "${globals.backendUrl}/api/meals?day=${new DateTime.now().weekday}";
       final response = await http.get(
         url,
         headers: {

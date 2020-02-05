@@ -6,6 +6,7 @@ import 'package:mobile_app/views/list_reviews.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 class ReviewMeal extends StatefulWidget {
   final mealId;
@@ -31,7 +32,7 @@ class _ReviewMealState extends State<ReviewMeal> {
   Future<bool> submitDataReview(mealId, token) async {
     if (reviewText.text.isEmpty) return false;
     else {
-      final url = "http://192.168.0.34:8000/api/meals/$mealId?review=1";
+      final url = "${globals.backendUrl}/api/meals/$mealId?review=1";
       Map<String, String> body = { 'comment' : reviewText.text, 'stars' : rating.toString() };
       final response = await http.put(
           url,
@@ -59,7 +60,7 @@ class _ReviewMealState extends State<ReviewMeal> {
       return sharedPrefs.getString('token');
     }
     Future<Map<String, dynamic>> getMealData(token) async {
-      final url = "http://192.168.0.34:8000/api/meals/$mealId";
+      final url = "${globals.backendUrl}/api/meals/$mealId";
       final response = await http.get(
           url,
           headers: {
@@ -72,7 +73,7 @@ class _ReviewMealState extends State<ReviewMeal> {
     }
 
     Future<bool> addToFavorites(mealId, token) async {
-      final url = "http://192.168.0.34:8000/api/meals/$mealId?toggle_favorite=1";
+      final url = "${globals.backendUrl}/api/meals/$mealId?toggle_favorite=1";
       Map<String, String> body = { 'meal_id': mealId.toString() };
       final response = await http.put(
           url,
@@ -123,7 +124,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                                   Container(
                                     height: MediaQuery.of(context).size.width * 0.35,
                                     width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(image: new DecorationImage(image: new NetworkImage("http://192.168.0.34:8000/${snapshot.data["img"]}"), fit: BoxFit.cover)
+                                    decoration: BoxDecoration(image: new DecorationImage(image: new NetworkImage("${globals.backendUrl}/${snapshot.data["img"]}"), fit: BoxFit.cover)
                                     ),
                                   ),
                                   Container(
@@ -183,10 +184,10 @@ class _ReviewMealState extends State<ReviewMeal> {
                                     borderRadius: BorderRadius.circular(80.0),
                                     child: FutureBuilder<String>(
                                         future: _getUserImage(),
-                                        initialData: 'http://192.168.0.43:8000/img/users/DefaultUserImage.png',
+                                        initialData: '${globals.backendUrl}/img/users/DefaultUserImage.png',
                                         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                                           return snapshot.hasData ?
-                                          Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/users/DefaultUserImage.png', width: 100) :
+                                          Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : '${globals.backendUrl}/img/users/DefaultUserImage.png', width: 100) :
                                           CircularProgressIndicator();
                                         }
                                     ),
@@ -306,7 +307,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                                               leading: SizedBox(
                                                 child: ClipRRect(
                                                     borderRadius: BorderRadius.circular(80.0),
-                                                    child: Image.network("http://192.168.0.34:8000/${snapshot.data['reviews'][index]['user']['img']}", width: 50)
+                                                    child: Image.network("${globals.backendUrl}/${snapshot.data['reviews'][index]['user']['img']}", width: 50)
                                                 ),
                                               ),
                                               title: Padding(

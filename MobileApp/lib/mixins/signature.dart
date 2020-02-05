@@ -3,10 +3,11 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 abstract class Signature {
   Future<String> submitDataPin(code, token, pin, scaffoldKey, { qrScan: false}) async {
-    final url = "http://192.168.0.34:8000/api/scan-qr-code";
+    final url = "${globals.backendUrl}/api/scan-qr-code";
     Map<String, String> body = { 'code' : code };
     final response = await http.post(
         url,

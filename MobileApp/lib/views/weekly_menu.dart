@@ -7,6 +7,7 @@ import 'package:mobile_app/widgets/meal_list.dart';
 import 'package:mobile_app/widgets/navigation_drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 class WeeklyMenu extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
 
   Future <List<Meal>> getTodaysMeals(index, token) async {
     initialized = true;
-    final url = "http://192.168.0.34:8000/api/meals?day=$index";
+    final url = "${globals.backendUrl}/api/meals?day=$index";
     final response = await http.get(
       url,
       headers: {

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:mobile_app/providers/auth.dart';
 import 'package:mobile_app/utils/slide_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 enum DrawerSelection { daily, weekly, profile}
 
@@ -51,10 +52,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           borderRadius: new BorderRadius.circular(50.0),
                           child: FutureBuilder<String>(
                               future: _getUserImage(),
-                              initialData: 'http://192.168.0.43:8000/img/users/DefaultUserImage.png',
+                              initialData: '${globals.backendUrl}/img/users/DefaultUserImage.png',
                               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                                 return snapshot.hasData ?
-                                Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/users/DefaultUserImage.png', width: 75, height: 75) :
+                                Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : '${globals.backendUrl}/img/users/DefaultUserImage.png', width: 75, height: 75) :
                                 CircularProgressIndicator();
                               }
                             ),

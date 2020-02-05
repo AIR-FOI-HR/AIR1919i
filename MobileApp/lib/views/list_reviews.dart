@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mobile_app/utils/exceptions.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile_app/globals/globals.dart' as globals;
 
 class ListReviews extends StatefulWidget {
 
@@ -28,7 +29,7 @@ class _ListReviewsState extends State<ListReviews> {
     }
 
     Future <Map<String, dynamic>> getMealReviews(token) async {
-      final url = "http://192.168.0.34:8000/api/load-more-reviews/$mealId";
+      final url = "${globals.backendUrl}/api/load-more-reviews/$mealId";
       final response = await http.get(
           url,
           headers: {
@@ -82,7 +83,7 @@ class _ListReviewsState extends State<ListReviews> {
                                         leading: SizedBox(
                                           child: ClipRRect(
                                               borderRadius: BorderRadius.circular(80.0),
-                                              child: Image.network("http://192.168.0.34:8000/${snapshot.data['reviews'][index]['user']['img']}", width: 50)
+                                              child: Image.network("${globals.backendUrl}/${snapshot.data['reviews'][index]['user']['img']}", width: 50)
                                           ),
                                         ),
                                         title: Text("${snapshot.data['reviews'][index]['user']['name']}"),
