@@ -21,11 +21,16 @@ class DailyMenuState extends State<DailyMenu> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final reviewPin = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  void scanQRCode() async {
+  void scanQRCode(token) async {
     Navigator.of(context).pop();
     String cameraScanResult = await scanner.scan();
     if (cameraScanResult.isEmpty) return;
-    submitDataPin(cameraScanResult, qrScan: true);
+    submitDataPin(cameraScanResult, token, qrScan: true);
+  }
+
+  Future<String> _getUserToken() async{
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    return sharedPrefs.getString('token');
   }
 
   void _showDialogPin(){
@@ -61,9 +66,21 @@ class DailyMenuState extends State<DailyMenu> {
                   if (_formKey.currentState.validate() && reviewPin.text.isNotEmpty) {
                     Navigator.of(context).pop();
                     Widget message = FutureBuilder<String>(
-                        future: submitDataPin(reviewPin.text, qrScan: false),
+                        future: _getUserToken(),
                         builder: (BuildContext context, AsyncSnapshot snapshot) {
-                          return snapshot.hasData ?  Text("${snapshot.data}") : Text("Something went wrong");
+                          if (snapshot.hasData) {
+                            return FutureBuilder(
+                                future: submitDataPin(reviewPin.text, snapshot.data, qrScan: false),
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                  return snapshot.hasData ?  Text("${snapshot.data}") : Text("Something went wrong");
+                                }
+                            );
+                          } else return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                            ],
+                          );
                         }
                     );
                     _scaffoldKey.currentState.showSnackBar(
@@ -71,7 +88,7 @@ class DailyMenuState extends State<DailyMenu> {
                             elevation: 6.0,
                             duration:  const Duration(seconds: 2),
                             behavior: SnackBarBehavior.fixed,
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Color(0xffFFB200),
                             content: message
                       ));
                   }
@@ -100,7 +117,7 @@ class DailyMenuState extends State<DailyMenu> {
           actions: <Widget>[
             new FlatButton(
               color: Color(0xffFFB200),
-              child: new Text("PIN", style: TextStyle(color: Colors.white),),
+              child: new Text("PIN", style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
                 _showDialogPin();
@@ -108,9 +125,11 @@ class DailyMenuState extends State<DailyMenu> {
             ),
             new FlatButton(
               color: Color(0xffFFB200),
-              child: new Text("QRcode",style: TextStyle(color: Colors.white),),
-              onPressed: () {
-                scanQRCode();
+              child: new Text("QRcode",style: TextStyle(color: Colors.white)),
+              onPressed: (){
+                _getUserToken().then((result) {
+                  scanQRCode(result);
+                });
               },
             ),
           ],
@@ -119,10 +138,16 @@ class DailyMenuState extends State<DailyMenu> {
     );
   }
 
-  Future<String> submitDataPin(code, { qrScan: false}) async {
+  Future<String> submitDataPin(code, token, { qrScan: false}) async {
       final url = "http://192.168.0.34:8000/api/scan-qr-code";
       Map<String, String> body = { 'code' : code };
-      final response = await http.post(url, body: body);
+      final response = await http.post(
+          url,
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer $token'
+          },
+          body: body
+      );
       reviewPin.text = "";
       Map<String, dynamic> apiResponse = json.decode(response.body);
       if (!qrScan) return response.statusCode == 200 ? apiResponse["message"] : "Something went wrong.";
@@ -132,7 +157,7 @@ class DailyMenuState extends State<DailyMenu> {
                 elevation: 6.0,
                 duration:  const Duration(seconds: 2),
                 behavior: SnackBarBehavior.fixed,
-                backgroundColor: Colors.blue,
+                backgroundColor: Color(0xffFFB200),
                 content: Text("${apiResponse["message"]}")
           ));
       }
@@ -141,11 +166,6 @@ class DailyMenuState extends State<DailyMenu> {
 
   @override
   Widget build(BuildContext context) {
-
-    Future<String> _getUserToken() async{
-      final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-      return sharedPrefs.getString('token');
-    }
 
     Future <List<Meal>> getTodaysMeals(token) async {
       final url = "http://192.168.0.34:8000/api/meals?day=${new DateTime.now().weekday}";
