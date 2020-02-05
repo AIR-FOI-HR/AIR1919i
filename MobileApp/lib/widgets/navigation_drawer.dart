@@ -22,8 +22,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   @override
   Widget build(BuildContext context) {
 
-//    print(ModalRoute.of(context).settings.name); TODO => Highlight current route in navigation drawer
-
     Future<String> _getUserImage() async{
       final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
       return sharedPrefs.getString('img');
@@ -94,7 +92,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   selected: _drawerSelection == DrawerSelection.daily,
                 onTap: () {
                   _drawerSelection = DrawerSelection.daily;
-                  print(_drawerSelection);
                   Navigator.push(context, SlideRoute(page: Router(), from: 1.0));
                 }
               ),
@@ -104,7 +101,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                 selected:  _drawerSelection == DrawerSelection.weekly,
                 onTap: () {
                     _drawerSelection = DrawerSelection.weekly;
-                    print(_drawerSelection);
                     Navigator.push(context, SlideRoute(page: WeeklyMenu(), from: 1.0));
                 },
               ),
@@ -123,7 +119,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                 onTap: () {
                   Navigator.pop(context);
                   Provider.of<AuthProvider>(context, listen: false).logOut();
-                  Navigator.of(context).popUntil(ModalRoute.withName('/')); // TODO => Fix animation
+                  Navigator.of(context).popUntil(ModalRoute.withName('/'));
                 },
               ),
             ],
