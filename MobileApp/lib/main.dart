@@ -9,7 +9,6 @@ import 'package:mobile_app/views/register.dart';
 import 'package:mobile_app/views/password_reset.dart';
 import 'package:mobile_app/views/weekly_menu.dart';
 import 'package:mobile_app/views/daily_menu.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() {
   runApp(
@@ -35,14 +34,6 @@ class Router extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final authProvider = Provider.of<AuthProvider>(context);
-
-    // TODO => Send this token to backend on login.
-    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-    _firebaseMessaging.requestNotificationPermissions();
-    print('Printing Token');
-    _firebaseMessaging.getToken().then((token){
-      print(token);
-    });
 
     return Consumer<AuthProvider>(
       builder: (context, user, child) {
