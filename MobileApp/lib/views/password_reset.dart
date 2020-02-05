@@ -53,7 +53,7 @@ class PasswordResetFormState extends State<PasswordResetForm> {
     final form = _formKey.currentState;
     if (form.validate()) {
       bool success = await Provider.of<AuthProvider>(context, listen: false).passwordReset(email);
-      if (success) Navigator.pushReplacementNamed( context, '/login' );
+      if (success) Navigator.pop(context);
       else setState(() { message = 'An error occurred during password reset.'; });
     }
   }
