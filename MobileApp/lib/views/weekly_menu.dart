@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mobile_app/models/meal.dart';
-import 'package:mobile_app/utils/exceptions.dart';
 import 'package:mobile_app/widgets/meal_list.dart';
 import 'package:mobile_app/widgets/navigation_drawer.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WeeklyMenu extends StatefulWidget {
   @override
@@ -17,11 +18,21 @@ class WeeklyMenuState extends State<WeeklyMenu>{
   int _selectedIndexForTabBar = 1;
   bool initialized = false;
 
-  Future <List<Meal>> getMyProfileData(index) async {
+  Future<String> _getUserToken() async{
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    return sharedPrefs.getString('token');
+  }
+
+  Future <List<Meal>> getTodaysMeals(index, token) async {
     initialized = true;
     final url = "http://192.168.0.34:8000/api/meals?day=$index";
-    final response = await http.get(url);
-    if (response.statusCode != 200) throw new ApiException(response.statusCode.toString(), "API Error" );
+    final response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      },
+    );
+    if (response.statusCode != 200) return [];
     Map<String, dynamic> apiResponse = json.decode(response.body);
     List<dynamic> data = apiResponse['data'];
     List<Meal> meals = mealFromJson(json.encode(data));
@@ -50,7 +61,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
           _selectedIndexForTabBar++;
           _selectedIndexForTabBar = index + 1;
         });
-        getMyProfileData(_selectedIndexForTabBar);
+        getTodaysMeals(_selectedIndexForTabBar, _getUserToken());
         returnFormattedDate();
       },
       unselectedLabelColor: Colors.grey,
@@ -111,9 +122,16 @@ class WeeklyMenuState extends State<WeeklyMenu>{
                   Padding(
                       padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
                       child: FutureBuilder(
-                          future: getMyProfileData(initialized ? _selectedIndexForTabBar : new DateTime.now().weekday),
+                          future: _getUserToken(),
                           builder: (BuildContext context, AsyncSnapshot snapshot) {
-                              return snapshot.hasData ? mealList(context, snapshot.data) : CircularProgressIndicator();
+                            if (snapshot.hasData) {
+                              return FutureBuilder(
+                                  future: getTodaysMeals((initialized ? _selectedIndexForTabBar : new DateTime.now().weekday), snapshot.data),
+                                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                    return snapshot.hasData ? mealList(context, snapshot.data) : CircularProgressIndicator();
+                                  }
+                              );
+                            } else return CircularProgressIndicator();
                           }
                       ),
                   )

@@ -1,13 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:mobile_app/providers/meal.dart';
+import 'package:mobile_app/models/meal.dart';
+import 'package:mobile_app/utils/exceptions.dart';
 import 'package:mobile_app/widgets/meal_list.dart';
 import 'package:mobile_app/widgets/navigation_drawer.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DailyMenu extends StatefulWidget {
   @override
@@ -134,12 +136,31 @@ class DailyMenuState extends State<DailyMenu> {
                 content: Text("${apiResponse["message"]}")
           ));
       }
+      return "Success";
   }
 
   @override
   Widget build(BuildContext context) {
 
-    final meals = Provider.of<MealProvider>(context).meals;
+    Future<String> _getUserToken() async{
+      final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+      return sharedPrefs.getString('token');
+    }
+
+    Future <List<Meal>> getTodaysMeals(token) async {
+      final url = "http://192.168.0.34:8000/api/meals?day=${new DateTime.now().weekday}";
+      final response = await http.get(
+        url,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token'
+        },
+      );
+      if (response.statusCode != 200) throw new ApiException(response.statusCode.toString(), "API Error" );
+      Map<String, dynamic> apiResponse = json.decode(response.body);
+      List<dynamic> data = apiResponse['data'];
+      List<Meal> meals = mealFromJson(json.encode(data));
+      return meals;
+    }
 
     // Get current day and date
     DateTime now = new DateTime.now();
@@ -174,7 +195,22 @@ class DailyMenuState extends State<DailyMenu> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
-                child: mealList(context, meals))
+                child: FutureBuilder(
+                    future: _getUserToken(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        return FutureBuilder(
+                            future: getTodaysMeals(snapshot.data),
+                            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                return mealList(context, snapshot.data);
+                              } else return CircularProgressIndicator();
+                            }
+                        );
+                      } else return CircularProgressIndicator();
+                    }
+                ),
+            )
           ],
         ),
       ),
