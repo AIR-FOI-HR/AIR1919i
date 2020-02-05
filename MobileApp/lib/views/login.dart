@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:mobile_app/views/password_reset.dart';
@@ -46,13 +47,17 @@ class LogInFormState extends State<LogInForm> {
   String password;
   String message = '';
 
-  Future<void> submit() async {
+  Future<void> submit(firebaseToken) async {
     final form = _formKey.currentState;
-    if (form.validate())  await Provider.of<AuthProvider>(context, listen: false).login(email, password);
+    if (form.validate()) await Provider.of<AuthProvider>(context, listen: false).login(email, password, firebaseToken);
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+    _firebaseMessaging.requestNotificationPermissions();
+
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -105,7 +110,9 @@ class LogInFormState extends State<LogInForm> {
             SizedBox(height: 15.0),
             StyledFlatButton(
               'Login',
-              onPressed: submit,
+                onPressed: () {
+                  _firebaseMessaging.getToken().then((result){ submit(result); });
+                }
             ),
             SizedBox(height: 20.0),
             Center(
