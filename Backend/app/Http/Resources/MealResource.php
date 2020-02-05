@@ -28,10 +28,9 @@ class MealResource extends JsonResource
             'img' => $this->img,
             'description' => $this->description,
             'favorites_count' => $this->users->count(),
-            'reviews_count' => round($this->reviews()->sum('stars') / $this->reviews()->count(), 0),
+            'stars' => $this->reviews()->count() != 0 ? round($this->reviews()->sum('stars') / $this->reviews()->count(), 0) : 0,
             'is_favorite' => $this->is_favorite,
             'reviews_counter' => $this->reviews()->count(),
-            'stars' => round($this->reviews()->sum('stars') / $this->reviews()->count(), 0),
             'reviews' => $this->reviews()->orderBy('created_at', 'DESC')->with('user')->get()->filter(function ($value, $key) { return $key <= 2;}),
         ];
     }

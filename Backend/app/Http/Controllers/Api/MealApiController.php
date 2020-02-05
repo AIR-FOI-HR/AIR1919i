@@ -32,7 +32,7 @@ class MealApiController extends ApiController
                 ->get()
                 ->transform(function ($el) {
                     $el->user_favorites = (string)$el->users->count();
-                    $el->stars = round($el->reviews()->sum('stars') / $el->reviews()->count(), 0);
+                    $el->stars = $el->reviews()->count() != 0 ? round($el->reviews()->sum('stars') / $el->reviews()->count(), 0) : 0;
                     return $el;
                 })
         );
