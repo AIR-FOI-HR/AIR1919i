@@ -109,10 +109,36 @@ class _ListReviewsState extends State<ListReviews> {
                               }
                           )
                       );
-                    } else return CircularProgressIndicator();
+                    } else return  Padding(
+                      padding: const EdgeInsets.only(top: 24),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
                   }
               );
-            } else return CircularProgressIndicator();
+            } else return Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                    ],
+                  ),
+                ],
+              ),
+            );
           }
       ),
       )

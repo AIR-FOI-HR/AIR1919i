@@ -204,10 +204,20 @@ class DailyMenuState extends State<DailyMenu> {
                             builder: (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.hasData) {
                                 return mealList(context, snapshot.data);
-                              } else return CircularProgressIndicator();
+                              } else return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                                ],
+                              );
                             }
                         );
-                      } else return CircularProgressIndicator();
+                      } else return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                        ],
+                      );
                     }
                 ),
             )

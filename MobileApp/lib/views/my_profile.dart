@@ -115,7 +115,20 @@ class _MyProfileState extends State<MyProfile> {
                                       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                                         return snapshot.hasData ?
                                         Image.network(snapshot.data != 'NO_IMAGE_SET' ? snapshot.data : 'http://192.168.0.43:8000/img/users/DefaultUserImage.png', width: 100) :
-                                        CircularProgressIndicator();
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 24),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        );
                                       }
                                   ),
                                 ),
@@ -127,7 +140,20 @@ class _MyProfileState extends State<MyProfile> {
                                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                                   return snapshot.hasData ?
                                   Text(snapshot.data, style: TextStyle(fontWeight: FontWeight.bold)) :
-                                  CircularProgressIndicator();
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 24),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 }
                             ),
                             Padding(
@@ -328,10 +354,36 @@ class _MyProfileState extends State<MyProfile> {
                             ),
                           ],
                         );
-                      } else return CircularProgressIndicator();
+                      } else return Padding(
+                        padding: const EdgeInsets.only(top: 24),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
                     }
                 );
-            } else return CircularProgressIndicator();
+            } else return Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                      ],
+                    ),
+                ],
+              ),
+            );
           }
         ),
       ),

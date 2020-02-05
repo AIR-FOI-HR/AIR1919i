@@ -128,10 +128,20 @@ class WeeklyMenuState extends State<WeeklyMenu>{
                               return FutureBuilder(
                                   future: getTodaysMeals((initialized ? _selectedIndexForTabBar : new DateTime.now().weekday), snapshot.data),
                                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                    return snapshot.hasData ? mealList(context, snapshot.data) : CircularProgressIndicator();
+                                    return snapshot.hasData ? mealList(context, snapshot.data) : Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                                      ],
+                                    );
                                   }
                               );
-                            } else return CircularProgressIndicator();
+                            } else return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(width: 50, height: 50, child: CircularProgressIndicator()),
+                              ],
+                            );
                           }
                       ),
                   )

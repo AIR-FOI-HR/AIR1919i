@@ -196,7 +196,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                               Center(child: Text("Rate and review", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
                               Padding(
                                 padding: EdgeInsets.only(top: 15),
-                                child:     SmoothStarRating(
+                                child: SmoothStarRating(
                                   color: Color(0xffFFB200),
                                   borderColor: Color(0xffFFB200),
                                   rating: rating,
@@ -397,12 +397,55 @@ class _ReviewMealState extends State<ReviewMeal> {
                         backgroundColor: Color(0xffFD0034),
                       ),
                     );
-                  } else return CircularProgressIndicator();
+                  } else return Scaffold(
+                      body: SingleChildScrollView(
+                          child: Container(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 70),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(width: 50,
+                                            height: 50,
+                                            child: CircularProgressIndicator()),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                          )
+                      )
+                  );
                 }
             );
-          } else return CircularProgressIndicator();
+          } else
+            return Scaffold(
+                body: SingleChildScrollView(
+                    child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 70),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(width: 50,
+                                      height: 50,
+                                      child: CircularProgressIndicator()),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                    )
+                )
+            );
         }
-    );
+      );
   }
 
   void changeFloatingIcon() {
