@@ -15,12 +15,9 @@ class SubscriptionApiController extends ApiController
      */
     public function index(Request $request)
     {
-        // TODO => Authenticate user based on token or request
-//        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        $user = User::findOrFail(1);
+        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
         $user->subscribed_to_notifications = $request->input('subscribed') == 'yes' ? false : true;
         $user->save();
-
         return response()->json(['value' => $user->subscribed_to_notifications], 200);
     }
 }

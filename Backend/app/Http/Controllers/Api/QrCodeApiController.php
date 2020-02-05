@@ -17,10 +17,9 @@ class QrCodeApiController extends ApiController
      */
     public function index(Request $request)
     {
-        // Authenticate user
+        // TODO => Authenticate user
 //        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-
-        $user = User::find(1);
+        $user = User::Find(1);
 
         $validator = Validator::make($request->all(), ['code' => 'required|string|size:8']);
 

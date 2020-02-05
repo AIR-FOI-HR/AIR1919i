@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
 use Illuminate\Http\Request;
 
 class MyProfileApiController extends ApiController
@@ -15,10 +14,8 @@ class MyProfileApiController extends ApiController
      */
     public function index(Request $request)
     {
-        // TODO => Send authenticated request.
         // Authenticate user
-//        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        $user = User::findOrFail(1);
+        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
 
         // Get favorite meals
         $favorite_meals = $user->favoriteMeals()

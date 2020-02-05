@@ -17,8 +17,7 @@ class ReviewApiController extends ApiController
      */
     public function show(Request $request, $id)
     {
-        // TODO => Authenticate user based on token or request
-//        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
+        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
         $meal = Meal::findOrFail($id);
         $reviews = Review::with('user')->orderBy('created_at', 'DESC')->where('meal_id', $meal->id)->get();
         return response()->json([

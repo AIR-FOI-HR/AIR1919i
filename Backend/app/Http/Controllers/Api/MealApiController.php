@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Review;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,28 +20,23 @@ class MealApiController extends ApiController
      */
     public function index(Request $request)
     {
-        // TODO => Authenticate user based on token or request
-//        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-
-
+        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
         $validator = Validator::make($request->all(), ['day' => 'required|integer|between:0,7']);
-
         if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
-
         $day = $request->input('day');
-
         return new MealCollection(
             Meal::with('reviews')
                 ->whereHas('weeklyMenu', function ($query) use ($day) {
-                $query->where('day', $day ?? (Carbon::today()->dayOfWeek ?? 7));
-            })
-            ->get()
-            ->transform(function ($el) {
-                $el->user_favorites = (string)$el->users->count();
-                $el->stars = round($el->reviews()->sum('stars') / $el->reviews()->count(), 0);
-                return $el;
-            })
+                 $query->where('day', $day ?? (Carbon::today()->dayOfWeek ?? 7));
+                })
+                ->get()
+                ->transform(function ($el) {
+                    $el->user_favorites = (string)$el->users->count();
+                    $el->stars = round($el->reviews()->sum('stars') / $el->reviews()->count(), 0);
+                    return $el;
+                })
         );
+
     }
 
     /**
@@ -54,8 +48,7 @@ class MealApiController extends ApiController
      */
     public function show(Request $request, $id)
     {
-//        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        $user = User::findOrFail(1);
+        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
         $meal = Meal::findOrFail($id);
         MealResource::withoutWrapping();
         return (new MealResource($meal))->isFavorite($user->favoriteMeals->contains($meal->id));
@@ -70,9 +63,8 @@ class MealApiController extends ApiController
      */
     public function update(Request $request, $id)
     {
-//        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
+        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
         try {
-            $user = User::find(1);
             $meal = Meal::findOrFail($id);
 
             $validator = Validator::make($request->all(), [

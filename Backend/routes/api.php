@@ -16,8 +16,3 @@ Route::apiResource('load-more-reviews', 'Api\ReviewApiController')->only(['show'
 Route::post('scan-qr-code', 'Api\QrCodeApiController@index');
 Route::post('subscribe-to-notifications', 'Api\SubscriptionApiController@index');
 Route::get('my-profile', 'Api\MyProfileApiController@index');
-
-// Not Found
-Route::fallback(function(){
-    return response()->json(['message' => 'Resource not found.'], 404);
-});
