@@ -28,7 +28,8 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String email, String password, String firebaseToken) async {
+
     _status = Status.Authenticating;
     _notification = null;
     notifyListeners();
@@ -38,6 +39,7 @@ class AuthProvider with ChangeNotifier {
     Map<String, String> body = {
       'email': email,
       'password': password,
+      'firebase_token': firebaseToken,
     };
 
     final response = await http.post(url, body: body,);
