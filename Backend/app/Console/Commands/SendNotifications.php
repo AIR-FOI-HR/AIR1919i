@@ -64,7 +64,7 @@ class SendNotifications extends Command
             $client = new \GuzzleHttp\Client();
             $client->request('POST', 'https://fcm.googleapis.com/fcm/send', [
                 'headers' => [
-                    'Authorization' => 'key=AAAAGhc8vGI:APA91bGY-j1-znJ_HFCSKmnMFUwheJPtt4r2w0M6HteJ0TS-Zb-w1TrnmqXJenmQpznQcnVQZlp8ZaaYCMp9G8_1zGSQuPIpjKLtB8NFy4Kgx-SNOg7iVyTmPXs_KgUMNJDmZRMks3yb',
+                    'Authorization' => 'key=AAAAGhc8vGI:APA91bEnvWj7dPeM4kMhiGJsSjVQL4tp99B_AA8mGaqF6Gm7s1yAJyRVmNe_hem4Csv_ZQ39D0NmynFJjB03Iem10uW29leOs0cXoeL178yxnyFIA7PjNQJLrnBl9I6LG2IOv9f3-3Vl',
                     'Content-Type' => 'application/json'
                 ],
                 'json' => [
