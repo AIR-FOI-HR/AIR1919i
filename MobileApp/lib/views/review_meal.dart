@@ -282,7 +282,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                                           children: <Widget>[
                                             Padding (
                                                 padding: EdgeInsets.only(right: 17),
-                                                child: Text("${snapshot.data["reviews_count"]} total",style: TextStyle(color: Colors.grey, fontSize: 16))
+                                                child: Text("${snapshot.data["reviews_counter"]} total",style: TextStyle(color: Colors.grey, fontSize: 16))
                                             )
                                           ],
                                         )),
