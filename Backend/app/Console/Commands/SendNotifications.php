@@ -2,9 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Meal;
 use App\User;
-use App\WeeklyMenu;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -44,6 +42,7 @@ class SendNotifications extends Command
     {
         Log::info('Sending notifications to users');
 
+        // Select users with firebase token, subscribed to notifications and which have one of their favorite meals on todays menu
         $tokens = User::select('id', 'firebase_token')
             ->whereNotNull('firebase_token')
             ->where('subscribed_to_notifications', 1)
@@ -55,11 +54,13 @@ class SendNotifications extends Command
             ->pluck('firebase_token')
             ->toArray();
 
+        // If no users found return false
         if (count($tokens) == 0) {
             Log::info('No users with firebase tokens found.');
             return false;
         }
 
+        // Try to send the message via Firebase Cloud Messaging using the key given during the app regsitration
         try {
             $client = new \GuzzleHttp\Client();
             $client->request('POST', 'https://fcm.googleapis.com/fcm/send', [

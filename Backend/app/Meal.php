@@ -16,7 +16,7 @@ class Meal extends Model
     ];
 
     /**
-     * Meal HAS MANY users favorites
+     * Meal BELONGS TO MANY users favorites
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

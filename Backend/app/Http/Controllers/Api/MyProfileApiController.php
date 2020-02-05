@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class MyProfileApiController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Returns all of the data for the MyProfile section
      *
      * @param Request $request
      * @return bool|\Illuminate\Http\JsonResponse
@@ -31,6 +31,7 @@ class MyProfileApiController extends ApiController
         // Get number of reviews left
         $number_of_reviews = $user->reviews->count();
 
+        // Return the data
         return response()->json([
             'id' => $user->id,
             'favorite_meals' => $favorite_meals,

@@ -12,15 +12,18 @@ class NotificationController extends Controller
 {
     public function index(Request $request)
     {
+        // Validate the incoming request
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'message' => 'required',
         ]);
 
+        // Redirect back if the validator fails
         if ($validator->fails()) return redirect()->back();
 
         Log::info('Sending notifications to users.');
 
+        // Select users with firebase token, subscribed to notifications and which have one of their favorite meals on todays menu
         $tokens = User::select('id', 'firebase_token')
             ->whereNotNull('firebase_token')
             ->where('subscribed_to_notifications', 1)
@@ -32,11 +35,13 @@ class NotificationController extends Controller
             ->pluck('firebase_token')
             ->toArray();
 
+        // If no users found return false
         if (count($tokens) == 0) {
             Log::info('No users with firebase tokens found.');
             return redirect()->back();
         }
 
+        // Try to send the message via Firebase Cloud Messaging using the key given during the app regsitration
         try {
             $client = new \GuzzleHttp\Client();
             $client->request('POST', 'https://fcm.googleapis.com/fcm/send', [

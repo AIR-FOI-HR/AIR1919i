@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class QrCode extends Model
 {
     /**
-     * QrCode HAS MANY Users
+     * QrCode BELONGS TO MANY Users
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

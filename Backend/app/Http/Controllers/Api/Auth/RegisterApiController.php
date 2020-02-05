@@ -15,14 +15,17 @@ class RegisterApiController extends APIController
 
     public function register(Request $request)
     {
+        // Validate the incoming request params
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
+        // Return appropriate message if validator fails
         if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
 
+        // Try to create the user
         try {
             $this->create($request->all());
             return $this->responseSuccess('Registered successfully.');

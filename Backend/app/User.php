@@ -39,7 +39,7 @@ class User extends Authenticatable implements JWTSubject
 
 
     /**
-     * User HAS MANY favorite meals
+     * User BELONGS TO MANY favorite meals
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -59,7 +59,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * User HAS MANY QrCodes
+     * User BELONGS TO MANY QrCodes
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

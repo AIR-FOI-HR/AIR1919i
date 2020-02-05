@@ -13,14 +13,18 @@ class LoginApiController extends APIController
      */
     public function login()
     {
+        // Get credentials sent
         $credentials = request(['email', 'password']);
 
+        // Validate the token with the credentials
         if (!$token = auth()->attempt($credentials)) return $this->responseUnauthorized();
 
+        // If user sent the firebase token store it to the database
         $user = auth()->user();
         $user->firebase_token = request('firebase_token') ?? null;
         $user->save();
 
+        // Return response with necessary & arbitrary data
         return response()->json([
             'status' => 200,
             'message' => 'Authorized.',

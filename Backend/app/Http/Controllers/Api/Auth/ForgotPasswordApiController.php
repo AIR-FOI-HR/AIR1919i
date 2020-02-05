@@ -29,16 +29,19 @@ class ForgotPasswordApiController extends APIController
      */
     public function email(Request $request)
     {
+        // Validate incoming request
         $validator = Validator::make(
             $request->only('email'),
             ['email' => 'required|string|email|max:255|exists:users,email'],
             ['exists' => "We couldn't find an account with that email."]
         );
 
+        // Return response if validator fails
         if ($validator->fails()) return $this->responseUnprocessable($validator->errors());
 
         $response = $this->sendResetLinkEmail($request);
 
+        // Send resent link or the error message
         return $response ? $this->responseSuccess('Email reset link sent.') : $this->responseServerError();
     }
 }
