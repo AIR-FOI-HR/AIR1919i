@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/mixins/signature.dart';
 import 'package:mobile_app/models/meal.dart';
 import 'package:mobile_app/utils/exceptions.dart';
 import 'package:mobile_app/widgets/meal_list.dart';
@@ -16,16 +17,17 @@ class DailyMenu extends StatefulWidget {
   DailyMenuState createState() => DailyMenuState();
 }
 
-class DailyMenuState extends State<DailyMenu> {
+class DailyMenuState extends State<DailyMenu> with Signature {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final reviewPin = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   void scanQRCode(token) async {
     Navigator.of(context).pop();
     String cameraScanResult = await scanner.scan();
     if (cameraScanResult.isEmpty) return;
-    submitDataPin(cameraScanResult, token, qrScan: true);
+    submitDataPin(cameraScanResult, token, reviewPin, _scaffoldKey, qrScan: true);
   }
 
   Future<String> _getUserToken() async{
@@ -70,7 +72,7 @@ class DailyMenuState extends State<DailyMenu> {
                         builder: (BuildContext context, AsyncSnapshot snapshot) {
                           if (snapshot.hasData) {
                             return FutureBuilder(
-                                future: submitDataPin(reviewPin.text, snapshot.data, qrScan: false),
+                                future: submitDataPin(reviewPin.text, snapshot.data, reviewPin, _scaffoldKey, qrScan: false),
                                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                                   return snapshot.hasData ?  Text("${snapshot.data}") : Text("Something went wrong");
                                 }
@@ -136,32 +138,6 @@ class DailyMenuState extends State<DailyMenu> {
         );
       },
     );
-  }
-
-  Future<String> submitDataPin(code, token, { qrScan: false}) async {
-      final url = "http://192.168.0.34:8000/api/scan-qr-code";
-      Map<String, String> body = { 'code' : code };
-      final response = await http.post(
-          url,
-          headers: {
-            HttpHeaders.authorizationHeader: 'Bearer $token'
-          },
-          body: body
-      );
-      reviewPin.text = "";
-      Map<String, dynamic> apiResponse = json.decode(response.body);
-      if (!qrScan) return response.statusCode == 200 ? apiResponse["message"] : "Something went wrong.";
-      else {
-        _scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-                elevation: 6.0,
-                duration:  const Duration(seconds: 2),
-                behavior: SnackBarBehavior.fixed,
-                backgroundColor: Color(0xffFFB200),
-                content: Text("${apiResponse["message"]}")
-          ));
-      }
-      return "Success";
   }
 
   @override
