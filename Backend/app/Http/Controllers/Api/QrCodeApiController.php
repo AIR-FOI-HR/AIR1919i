@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\QrCode;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,9 +16,7 @@ class QrCodeApiController extends ApiController
      */
     public function index(Request $request)
     {
-        // TODO => Authenticate user
-//        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
-        $user = User::Find(1);
+        if (!$user = auth()->setRequest($request)->user()) return $this->responseUnauthorized();
 
         $validator = Validator::make($request->all(), ['code' => 'required|string|size:8']);
 
