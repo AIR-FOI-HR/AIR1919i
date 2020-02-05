@@ -292,7 +292,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                               Padding(
                                 padding: EdgeInsets.only(top: 25),
                                 child: Container(
-                                    child: ListView.builder(
+                                    child: snapshot.data['reviews'].length > 0 ? ListView.builder(
                                         physics: ClampingScrollPhysics(),
                                         scrollDirection: Axis.vertical,
                                         shrinkWrap: true,
@@ -333,7 +333,7 @@ class _ReviewMealState extends State<ReviewMeal> {
                                               )
                                           );
                                         }
-                                    )
+                                    ) : Text("No reviews found")
                                 ),
                               ),
                               Padding(
