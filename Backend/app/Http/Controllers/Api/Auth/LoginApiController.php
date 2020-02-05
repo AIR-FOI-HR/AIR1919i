@@ -18,6 +18,8 @@ class LoginApiController extends APIController
         if (!$token = auth()->attempt($credentials)) return $this->responseUnauthorized();
 
         $user = auth()->user();
+        $user->firebase_token = request('firebase_token') ?? null;
+        $user->save();
 
         return response()->json([
             'status' => 200,
