@@ -22,7 +22,7 @@ Nakon preuzimanja alata, potrebno je preći u Backend direktorij i pokrenuti slj
 php artisan serve --host 0.0.0.0
 ```
 
-Nakon toga je potrebno stvoriti .env datoteku iz .env.example datoteke i postaviti vaš lokalni inet adresu u APP_URL varijablu (npr. APP_URL=192.168.1.1:8000)
+Nakon toga je potrebno stvoriti .env datoteku iz .env.example datoteke i postaviti vaš lokalni inet adresu u ```APP_URL``` varijablu (npr. ```APP_URL=192.168.1.1:8000```)
 
 Isto tako, public direktorij treba imati dozvoljen pristup kako bi se mogle slati razne slike koje se koriste u mobilnoj aplikaciji.
 
