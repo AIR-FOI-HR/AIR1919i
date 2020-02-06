@@ -13,6 +13,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        // Create Users
         User::create([
             'name' => 'Toni Krešić',
             'email' => 'tonikresic1997@gmail.com',
@@ -180,6 +181,13 @@ class UsersTableSeeder extends Seeder
             'email' => 'edward.barnett@gmail.com',
             'password' => Hash::make(102030),
             'img' => 'img/users/22.jpg'
+        ]);
+
+        User::create([
+            'name' => 'John Doe',
+            'email' => 'john.doe@gmail.com',
+            'password' => Hash::make(102030),
+            'img' => 'img/users/DefaultUserImage.png'
         ]);
     }
 }

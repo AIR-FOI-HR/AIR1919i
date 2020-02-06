@@ -12,6 +12,7 @@ class UserFavoriteMealsTableSeeder extends Seeder
      */
     public function run()
     {
+        // Fill user_favorite_meals table
         User::find(1)->favoriteMeals()->attach([1,4,7,9]);
         User::find(2)->favoriteMeals()->attach([26,25,23,11,16]);
         User::find(3)->favoriteMeals()->attach([13,16]);

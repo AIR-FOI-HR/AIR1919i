@@ -12,6 +12,7 @@ class QrCodesTableSeeder extends Seeder
      */
     public function run()
     {
+        // Create QRcodes
         $qr_code = new QrCode();
         $qr_code->code = 'HvmEvy2I';
         $qr_code->img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMsAAADLAQMAAAD6NfVwAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAOpJREFUWIXtlzsOhDAMRGdFQckRchSORo6Wo+wRKClWGH/YKELQ2yJTEOSXZuSMCUBX1/s0kWhDKtgHfd8DoS8/ho2XhRephEIz7YP6kh1EOR46fcVEgO2IhlC78XDYHCPLMtvLDzF3jKrmm5p3JL7UUAH9xjWVJRBCIvpoTT4Ba2qb4h7ZUZITxTuk0Fh2j2BONNIYuTk5FsqwKcpoRTOIAiCTNEXmEafiKseoTlH84xAJce1sit47mxMVAZ3XHo40x0GXeEhzMNGdL/eIyiJT9K4pnhHsP2XO1ykaANUsm6/LpcI36up6kw7E9S7TZOeGPAAAAABJRU5ErkJggg==';

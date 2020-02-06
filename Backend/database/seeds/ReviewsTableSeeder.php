@@ -12,6 +12,7 @@ class ReviewsTableSeeder extends Seeder
      */
     public function run()
     {
+        // Create Reviews
         Review::create([
             'meal_id' => 1,
             'user_id' => 1,
@@ -599,8 +600,6 @@ class ReviewsTableSeeder extends Seeder
             'stars' => 4,
             'comment' => 'This place had a lot of heart. The food was cooked to perfection. The waiter was prompt and polite. The ambiance gives off an earthy feel-good vibe. It failed to meet the 5-star experience because my wine glass was dirty.'
         ]);
-
-//         TODO => Insert more reviews (at least 4 reviews for each meal)
 
         Review::create([
             'meal_id' => 1,

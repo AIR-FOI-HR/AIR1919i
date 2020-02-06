@@ -30,6 +30,11 @@ class WeeklyMenuTableSeeder extends Seeder
 
         $weekly_menu = new WeeklyMenu();
         $weekly_menu->day = 1;
+        $weekly_menu->meal_id = 27;
+        $weekly_menu->save();
+
+        $weekly_menu = new WeeklyMenu();
+        $weekly_menu->day = 1;
         $weekly_menu->meal_id = 4;
         $weekly_menu->save();
 
@@ -54,6 +59,11 @@ class WeeklyMenuTableSeeder extends Seeder
         $weekly_menu->meal_id = 8;
         $weekly_menu->save();
 
+        $weekly_menu = new WeeklyMenu();
+        $weekly_menu->day = 2;
+        $weekly_menu->meal_id = 20;
+        $weekly_menu->save();
+
         // Wednesday
         $weekly_menu = new WeeklyMenu();
         $weekly_menu->day = 3;
@@ -73,6 +83,11 @@ class WeeklyMenuTableSeeder extends Seeder
         $weekly_menu = new WeeklyMenu();
         $weekly_menu->day = 3;
         $weekly_menu->meal_id = 12;
+        $weekly_menu->save();
+
+        $weekly_menu = new WeeklyMenu();
+        $weekly_menu->day = 3;
+        $weekly_menu->meal_id = 3;
         $weekly_menu->save();
 
         // Thursday
@@ -96,6 +111,11 @@ class WeeklyMenuTableSeeder extends Seeder
         $weekly_menu->meal_id = 16;
         $weekly_menu->save();
 
+        $weekly_menu = new WeeklyMenu();
+        $weekly_menu->day = 4;
+        $weekly_menu->meal_id = 22;
+        $weekly_menu->save();
+
         // Friday
         $weekly_menu = new WeeklyMenu();
         $weekly_menu->day = 5;
@@ -105,6 +125,11 @@ class WeeklyMenuTableSeeder extends Seeder
         $weekly_menu = new WeeklyMenu();
         $weekly_menu->day = 5;
         $weekly_menu->meal_id = 18;
+        $weekly_menu->save();
+
+        $weekly_menu = new WeeklyMenu();
+        $weekly_menu->day = 5;
+        $weekly_menu->meal_id = 7;
         $weekly_menu->save();
 
         $weekly_menu = new WeeklyMenu();
@@ -138,6 +163,11 @@ class WeeklyMenuTableSeeder extends Seeder
         $weekly_menu->meal_id = 24;
         $weekly_menu->save();
 
+        $weekly_menu = new WeeklyMenu();
+        $weekly_menu->day = 6;
+        $weekly_menu->meal_id = 16;
+        $weekly_menu->save();
+
         // Sunday
         $weekly_menu = new WeeklyMenu();
         $weekly_menu->day = 7;
@@ -157,6 +187,11 @@ class WeeklyMenuTableSeeder extends Seeder
         $weekly_menu = new WeeklyMenu();
         $weekly_menu->day = 7;
         $weekly_menu->meal_id = 28;
+        $weekly_menu->save();
+
+        $weekly_menu = new WeeklyMenu();
+        $weekly_menu->day = 7;
+        $weekly_menu->meal_id = 8;
         $weekly_menu->save();
     }
 }

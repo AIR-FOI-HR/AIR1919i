@@ -11,6 +11,7 @@ class MealsTableSeeder extends Seeder {
      */
     public function run()
     {
+        // Create Meals
         Meal::create(['name' => 'Salmon', 'price' => 70, 'description' => 'fried potatoes, garlic sauce, calamari squid', 'img' => 'img/menu/salmon.jpeg']);
         Meal::create(['name' => 'Kobe Beef', 'price' => 115, 'description' => 'onion, grilled tomatoes, potatoes side dish', 'img' => 'img/menu/kobe_beef.jpeg']);
         Meal::create(['name' => 'Minced Meat', 'price' => 35, 'description' => 'olives, home baked bread, mushrooms', 'img' => 'img/menu/minced_meat.jpg']);

@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Seed the DB with dummy data
         $this->call([
             MealsTableSeeder::class,
             WeeklyMenuTableSeeder::class,
