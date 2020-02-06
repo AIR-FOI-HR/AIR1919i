@@ -41,14 +41,16 @@ class PasswordResetForm extends StatefulWidget {
 }
 
 class PasswordResetFormState extends State<PasswordResetForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // Initialize data
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String email;
   String password;
   String message = '';
 
   Map response = new Map();
 
+  // Submit the forgotten pasword form
   Future<void> submit() async {
     final form = _formKey.currentState;
     if (form.validate()) {

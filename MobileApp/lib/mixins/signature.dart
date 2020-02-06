@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app/globals/globals.dart' as globals;
 
+// Modular class for signature collection
 abstract class Signature {
   Future<String> submitDataPin(code, token, pin, scaffoldKey, { qrScan: false}) async {
     final url = "${globals.backendUrl}/api/scan-qr-code";

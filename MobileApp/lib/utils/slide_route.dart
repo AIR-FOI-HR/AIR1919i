@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Class which handles the route change animation (left to right or right to left)
 class SlideRoute extends PageRouteBuilder {
   final Widget page;
   final from;

@@ -12,6 +12,7 @@ import 'package:mobile_app/widgets/notification_text.dart';
 import 'package:mobile_app/widgets/styled_flat_button.dart';
 
 class LogIn extends StatelessWidget {
+  // Build the main Login form as a Stateless widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,12 +42,15 @@ class LogInForm extends StatefulWidget {
 }
 
 class LogInFormState extends State<LogInForm> {
+  // Initialize form key
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // Initialize user data and message
   String email;
   String password;
   String message = '';
 
+  // Submits the data entered
   Future<void> submit(firebaseToken) async {
     final form = _formKey.currentState;
     if (form.validate()) await Provider.of<AuthProvider>(context, listen: false).login(email, password, firebaseToken);
@@ -55,6 +59,7 @@ class LogInFormState extends State<LogInForm> {
   @override
   Widget build(BuildContext context) {
 
+    // Firebase initialization
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.requestNotificationPermissions();
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_app/providers/auth.dart';
 
+// Loading widget used for display while the User is in status Uninitialized
 class Loading extends StatelessWidget {
 
   initAuthProvider(context) async {

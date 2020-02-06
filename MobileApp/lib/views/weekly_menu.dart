@@ -16,14 +16,17 @@ class WeeklyMenu extends StatefulWidget {
 
 class WeeklyMenuState extends State<WeeklyMenu>{
 
+  // Initialized selected tab
   int _selectedIndexForTabBar = 1;
   bool initialized = false;
 
+  // Retrieves the User token
   Future<String> _getUserToken() async{
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     return sharedPrefs.getString('token');
   }
 
+  // Gets the Meals depending on the day selected
   Future <List<Meal>> getTodaysMeals(index, token) async {
     initialized = true;
     final url = "${globals.backendUrl}/api/meals?day=$index";
@@ -43,6 +46,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
   @override
   Widget build(BuildContext context) {
 
+    // Initialize DateTime helper vars
     DateTime now = new DateTime.now();
     String formattedDay =  DateFormat('EEEE').format(now);
 
@@ -53,6 +57,7 @@ class WeeklyMenuState extends State<WeeklyMenu>{
       return formattedDate;
     }
 
+    // Create the TabBar
     final tabBar = new TabBar(
       labelColor: Colors.white,
       labelStyle: TextStyle(fontSize: 16),

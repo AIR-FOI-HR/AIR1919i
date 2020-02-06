@@ -39,8 +39,9 @@ class RegisterForm extends StatefulWidget {
 }
 
 class RegisterFormState extends State<RegisterForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // Initialize data needed for the registration
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String name;
   String email;
   String password;
@@ -49,6 +50,7 @@ class RegisterFormState extends State<RegisterForm> {
 
   Map response = new Map();
 
+  // Submit the form
   Future<void> submit() async {
     final form = _formKey.currentState;
     if (form.validate()) {

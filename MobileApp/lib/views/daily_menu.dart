@@ -19,11 +19,12 @@ class DailyMenu extends StatefulWidget {
 }
 
 class DailyMenuState extends State<DailyMenu> with Signature {
-
+  // Initialize variables (SnackBar, PIN and the form key)
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final reviewPin = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  // Handles the QRCode scan
   void scanQRCode(token) async {
     Navigator.of(context).pop();
     String cameraScanResult = await scanner.scan();
@@ -31,11 +32,13 @@ class DailyMenuState extends State<DailyMenu> with Signature {
     submitDataPin(cameraScanResult, token, reviewPin, _scaffoldKey, qrScan: true);
   }
 
+  // Retrieves the user token from the storage
   Future<String> _getUserToken() async{
     final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     return sharedPrefs.getString('token');
   }
 
+  // Shows the PIN dialog if selected
   void _showDialogPin(){
     showDialog(
       context: context,
@@ -110,6 +113,7 @@ class DailyMenuState extends State<DailyMenu> with Signature {
     );
   }
 
+  // Shows the main dialog
   void _showDialog() {
     showDialog(
       context: context,
@@ -144,6 +148,7 @@ class DailyMenuState extends State<DailyMenu> with Signature {
   @override
   Widget build(BuildContext context) {
 
+    // Retrieves todays Meals
     Future <List<Meal>> getTodaysMeals(token) async {
       final url = "${globals.backendUrl}/api/meals?day=${new DateTime.now().weekday}";
       final response = await http.get(

@@ -33,8 +33,10 @@ class Router extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // Get the Auth Provider object
     final authProvider = Provider.of<AuthProvider>(context);
 
+    // Check the User current status
     return Consumer<AuthProvider>(
       builder: (context, user, child) {
         switch (user.status) {

@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mobile_app/globals/globals.dart' as globals;
 
 class ListReviews extends StatefulWidget {
-
+  // Get the Meal requested
   final mealId;
   ListReviews({Key key, @required this.mealId}) : super(key: key);
 
@@ -16,18 +16,20 @@ class ListReviews extends StatefulWidget {
 }
 
 class _ListReviewsState extends State<ListReviews> {
-
+  // Take the Meal ID
   final mealId;
   _ListReviewsState({Key key, @required this.mealId});
 
   @override
   Widget build(BuildContext context) {
 
+    // Retrieve User token from the local storage
     Future<String> _getUserToken() async{
       final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
       return sharedPrefs.getString('token');
     }
 
+    // Get last 3 Meal reviews
     Future <Map<String, dynamic>> getMealReviews(token) async {
       final url = "${globals.backendUrl}/api/load-more-reviews/$mealId";
       final response = await http.get(

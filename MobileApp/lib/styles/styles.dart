@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Class used for common styles used throughout the app
 class Styles {
   static TextStyle defaultStyle = TextStyle(
     color: Colors.white

@@ -18,9 +18,11 @@ class ReviewMeal extends StatefulWidget {
 
 class _ReviewMealState extends State<ReviewMeal> {
 
+  // Initialize Meal requested for the  Review
   final mealId;
   _ReviewMealState({Key key, @required this.mealId});
 
+  // Initialize necessary variables
   GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
   IconData icon;
   bool visible = false;
@@ -29,6 +31,7 @@ class _ReviewMealState extends State<ReviewMeal> {
   final reviewText = new TextEditingController();
   var rating = 0.0;
 
+  // Submit the comment and the rating
   Future<bool> submitDataReview(mealId, token) async {
     if (reviewText.text.isEmpty) return false;
     else {
@@ -50,15 +53,19 @@ class _ReviewMealState extends State<ReviewMeal> {
   @override
   Widget build(BuildContext context) {
 
+    // Retrieves the User image
     Future<String> _getUserImage() async{
       final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
       return sharedPrefs.getString('img');
     }
 
+    // Retrieves the User image
     Future<String> _getUserToken() async{
       final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
       return sharedPrefs.getString('token');
     }
+
+    // Gets the Meal data
     Future<Map<String, dynamic>> getMealData(token) async {
       final url = "${globals.backendUrl}/api/meals/$mealId";
       final response = await http.get(
@@ -72,6 +79,7 @@ class _ReviewMealState extends State<ReviewMeal> {
       return apiResponse;
     }
 
+    // Adds the Meal to User's favorites
     Future<bool> addToFavorites(mealId, token) async {
       final url = "${globals.backendUrl}/api/meals/$mealId?toggle_favorite=1";
       Map<String, String> body = { 'meal_id': mealId.toString() };

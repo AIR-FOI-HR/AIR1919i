@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+// Cast Meals to List from JSON
 List<Meal> mealFromJson(String str) => new List<Meal>.from(json.decode(str).map((x) => Meal.fromJson(x)));
 
+// Cast Meals to JSON from List
 String mealToJson(List<Meal> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
+// Define class Meal
 class Meal {
     int id;
     String price;
@@ -15,6 +18,7 @@ class Meal {
     DateTime createdAt;
     DateTime updatedAt;
 
+    // Instantiate Meal object
     factory Meal.fromJson(Map<String, dynamic> json) => new Meal(
       id: json["id"],
       price: json["price"],
@@ -27,6 +31,7 @@ class Meal {
       updatedAt: DateTime.parse(json["updated_at"])
     );
 
+    // Define constructor
     Meal({
       this.id,
       this.price,
@@ -39,6 +44,7 @@ class Meal {
       this.updatedAt,
     });
 
+    // Cast the Meal to JSON
     Map<String, dynamic> toJson() => {
       "id": id,
       "price": price,

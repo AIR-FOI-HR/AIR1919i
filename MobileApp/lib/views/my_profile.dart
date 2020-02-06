@@ -15,42 +15,48 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfileState extends State<MyProfile> {
 
+  // If the "heart" floating button was pressed
   bool pressed = false;
+  // Initial value of the subscription
   String switchValue = 'no';
   GlobalKey<ScaffoldState> scaffoldState = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
 
-
+    // Retrieves all of the User data necessary for the Widget build
     Future <Map<String, dynamic>> getMyProfileData(token) async {
       final url = "${globals.backendUrl}/api/my-profile";
       final response = await http.get(
         url,
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $token'
-        },
+        }
       );
       if (response.statusCode != 200) throw new ApiException(response.statusCode.toString(), "API Error");
       Map<String, dynamic> apiResponse = json.decode(response.body);
       return apiResponse;
     }
 
+    // Retrieves User token from the storage
     Future<String> _getUserToken() async{
       final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
       return sharedPrefs.getString('token');
     }
 
+    // Retrieves User image from the storage
     Future<String> _getUserImage() async{
       final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
       return sharedPrefs.getString('img');
     }
 
+    // Retrieves User name from the storage
     Future<String> _getUserName() async{
       final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
       return sharedPrefs.getString('name');
     }
 
+    // Adds the Meal to User's favorites
     Future<bool> addToFavorites(mealId, token) async {
       final url = "${globals.backendUrl}/api/meals/$mealId?toggle_favorite=1";
       Map<String, String> body = { 'meal_id': mealId.toString() };
@@ -64,6 +70,7 @@ class _MyProfileState extends State<MyProfile> {
       return response.statusCode == 200 ? true : false;
     }
 
+    // Subscribes the User to notifications
     Future<bool> subscribeToNotifications(value, token) async {
       final url = "${globals.backendUrl}/api/subscribe-to-notifications";
       Map<String, String> body = { 'subscribed': value.toString() };
